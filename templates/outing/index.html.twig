@@ -3,6 +3,36 @@
 {% block title %}Hello OutingController!{% endblock %}
 
 {% block body %}
+<div class="row">
+<div class="col-8 offset-2 my-5">
+<form action="" method="GET">
+    <fieldset>
+        <legend>Filtrer les sorties</legend>
+        <label for="campus">Campus</label>
+        <select id="campus">
+            {% for c in campus %}
+                <option value="{{c.id}}">{{c.name}}</option>
+            {% endfor %}
+        </select>
+        <label for="search"></label>
+        <input id="search" type="text" placeholder="Patinoire"/>
+        <label for="dateStarted">Entre</label>
+        <input type="date" id="dateStarted">
+         <label for="dateEnded">Et</label>
+        <input type="date" id="dateEnded">
+        <input type="checkbox" id="isOrganizer">
+        <label for="isOrganizer">Sorties dont je suis l'organisateur</label>
+        <input type="checkbox" id="isRegistered">
+        <label for="isRegistered">Sorties auquel je suis inscrit.e</label>
+        <input type="checkbox" id="isNotRegistered">
+        <label for="isNotRegistered">Sorties dont je ne suis pas inscrit.e</label>
+        <input type="checkbox" id="isOver">
+        <label for="isOver">Sorties passées</label>
+
+        <button>Rechercher</button>
+    </fieldset>
+</form>
+</div>
 <div class="col-8 offset-2 my-5">
     <table class="table table-striped">
         <thead>
@@ -35,5 +65,6 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
 </div>
 {% endblock %}
