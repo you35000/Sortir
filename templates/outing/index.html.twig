@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OutingController!{% endblock %}
+
+{% block body %}
+<div class="col-8 offset-2 my-5">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrit / Place</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in outings %}
+                <tr>
+                    <td>{{o.name}}</td>
+                    <td>{{o.startDate | date('d/m/Y h:i')}}</td>
+                    <td>{{o.limitDate | date('d/m/Y')}}</td>
+                    <td>{{o.attendees|length}} / {{o.nbInscription}}</td>
+                    <td>{{o.state.libelle}}</td>
+                    <td>
+                        {% if app.user in o.attendees %}Inscrit {% endif %}
+                        {% if not app.user in o.attendees %}Non Inscrit {% endif %}
+                    </td>
+                    <td>{{o.organizer.firstname}}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
