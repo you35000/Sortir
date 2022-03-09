@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %} Ajouter un profil {% endblock %}
+
+
+{% block body %}
+    <h2 class="text_center"> Mon Profil</h2>
+
+    <div class="col-4 my-3">
+        {# form #}
+        {{ form_start (formulaire)}}
+
+        {{ form_widget (formulaire)}}
+        <button class="btn btn-primary" type="submit">Ajouter</button>
+        {{ form_end (formulaire)}}
+        {# </form> #}
+
+        <div class="col">
+            <a href="{{ path('app_outing') }}" title="Sortir.com | Home">
+                Retour
+            </a>
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+{% endblock %}

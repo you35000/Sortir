@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Afficher profil{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+{#            <div class="col-4 ">#}
+{#                <img src="{{ asset('uploads/user_image/' ~  user.imageFilename) }}">#}
+{#            </div>#}
+
+            <div class=" col order-1">
+                <h2 class="text-center my-3"> {{ user.pseudo }}</h2>
+
+                <table class="table table-light table-hover">
+
+                    <tr class="table-light">
+                        <th scope="row">Prénom :</th>
+                        <td>{{ user.firstName }}</td>
+                    </tr>
+                    <tr class="table-light">
+                        <th scope="row">nom :</th>
+                        <td>{{ user.lastName }}</td>
+                    </tr>
+                    <tr class="table-light">
+                        <th scope="row">Téléphone :</th>
+                        <td>{{ user.phone }}</td>
+                    </tr>
+                    <tr class="table-light">
+                        <th scope="row">Email :</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr class="table-light">
+                        <th scope="row">Campus :</th>
+                        <td>{{ user.campus.name }}</td>
+                    </tr>
+
+
+                </table>
+                <div class="container">
+                    <div class="row ">
+                        <div class="gap-2 d-md-flex justify-content-md-start flex flex-nowrap ">
+                            <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary"
+                               style="width: 130px">Retour</a>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
