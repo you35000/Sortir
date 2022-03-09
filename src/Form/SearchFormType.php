@@ -24,19 +24,22 @@ class SearchFormType extends AbstractType
                 'required' => false,
                 ])
             ->add('search', null,[
-                'required'=>false
+                'required'=>false,
+                'label'=>'Rechercher une sortie'
             ])
             ->add('dateStarted', DateType::class,[
                 'required'=>false,
                 'mapped' => false,
                 'widget' => 'single_text',
 //                'format' => 'dd-MM-YYYY',
+                'label'=> 'Entre'
             ])
             ->add('dateEnded', DateType::class,[
                 'required'=>false,
                 'mapped' => false,
                 'widget' => 'single_text',
 //                'format' => 'dd-MM-YYYY',
+            'label'=>'Et'
             ])
             ->add('isOrganizer', CheckboxType::class, [
                 'label'=>'Sorties dont je suis l\'organisateur',

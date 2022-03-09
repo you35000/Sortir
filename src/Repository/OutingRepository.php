@@ -53,16 +53,21 @@ class OutingRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('o');
 
+        if ($search->getCampus()){
+            $qb->andWhere('o.campus = :campus')
+            ->setParameter('campus', $search->getCampus());
+        }
+
         if ($search->getIsOrganizer()){
             $qb->andWhere('o.organizer = :user')
             ->setParameter('user',$user);
         }
 
-        if ($search->getIsRegistered()){
-            $qb->innerJoin('outing_user','ou', Join::INNER_JOIN, 'ou.outing_id = outing_id')
-                ->add('where', 'ou.user_id = :id')
-                ->setParameter('id', $user->getId());
-        }
+//        if ($search->getIsRegistered()){
+//            $qb->join('outing_user','ou')
+//                ->add('where', 'ou.user_id = :id')
+//                ->setParameter('id', $user->getId());
+//        }
 
         if ($search->getIsOver()){
             $qb->andWhere('o.startDate < CURRENT_DATE()');

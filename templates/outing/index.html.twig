@@ -7,7 +7,26 @@
     <div class="row">
         <div class="col-3 my-5 bg-secondary text-light p-4">
             {{ form_start(form) }}
-            {{ form_widget(form) }}
+            <div class="row">
+                <div class="col-6">
+                    {{ form_row(form.campus) }}
+                </div>
+                <div class="col-6">
+                    {{ form_row(form.search) }}
+                </div>
+                <div class="col-6">
+                    {{ form_row(form.dateStarted) }}
+                </div>
+                <div class="col-6">
+                    {{ form_row(form.dateEnded) }}
+                </div>
+            </div>
+            <div class="small">
+                {{ form_row(form.isOrganizer) }}
+                {{ form_row(form.isRegistered) }}
+                {{ form_row(form.isNotRegistered) }}
+                {{ form_row(form.isOver) }}
+            </div>
             <button class="btn btn-primary">Rechercher</button>
             {{ form_end(form) }}
         </div>
