@@ -61,7 +61,7 @@ class OutingRepository extends ServiceEntityRepository
 //            $qb->from('outing_user')
 //                ->leftJoin(User::class,'u')
 //        }
-        dd($qb->getQuery());
+
         if ($search->getIsOver()){
             $qb->andWhere('o.startDate < CURRENT_DATE()');
         }
