@@ -3,92 +3,93 @@
 {% block title %}Hello OutingController!{% endblock %}
 
 {% block body %}
-<div class="row mx-2">
-<div class="col-3 my-5">
-<form action="{{ path('app_outing') }}" method="POST">
-    <fieldset>
-        <legend>Filtrer les sorties</legend>
-        <div class="mb-3 row">
-            <label class="col-2 col-form-label" for="campus">Campus</label>
-            <div class="col-10"> 
-                <select class="form-select" id="campus" name="campus">
-                    {% for c in campus %}
-                        <option value="{{c.id}}">{{c.name}}</option>
-                    {% endfor %}
-                </select>
-            </div> 
-        </div>
-        <div class="mb-3 row">
-            <label class="col-4 col-form-label" for="search">Recherche</label>
-            <div class="col-8">
-                <input class="form-control" id="search" type="text" placeholder="Patinoire"/>
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <label class="col-2 col-form-label" for="dateStarted">Entre</label>
-            <div class="col-10">
-                <input type="date" id="dateStarted">
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <label  class="col-2 col-form-label" for="dateEnded">Et</label>
-            <div class="col-10">
-                <input type="date" id="dateEnded">
-            </div>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="isOrganizer">
-            <label class="form-check-label" for="isOrganizer">Sorties dont je suis l'organisateur</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="isRegistered">
-            <label class="form-check-label" for="isRegistered">Sorties auquel je suis inscrit.e</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="isNotRegistered">
-            <label class="form-check-label" for="isNotRegistered">Sorties dont je ne suis pas inscrit.e</label>
-       </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="isOver">
-            <label class="form-check-label" for="isOver">Sorties passées</label>
-        </div>
+    <div class="row mx-2">
+        <div class="col-3 my-5">
+            <form action="{{ path('app_outing') }}" method="GET">
+                <fieldset>
+                    <legend>Filtrer les sorties</legend>
+                    <div class="mb-3 row">
+                        <label class="col-2 col-form-label" for="campus">Campus</label>
+                        <div class="col-10">
+                            <select class="form-select" id="campus" name="campus">
+                                {% for c in campus %}
+                                    <option value="{{ c.id }}">{{ c.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-4 col-form-label" for="search">Recherche</label>
+                        <div class="col-8">
+                            <input class="form-control" id="search" type="text" placeholder="Patinoire"/>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-2 col-form-label" for="dateStarted">Entre</label>
+                        <div class="col-10">
+                            <input type="date" id="dateStarted">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-2 col-form-label" for="dateEnded">Et</label>
+                        <div class="col-10">
+                            <input type="date" id="dateEnded">
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="isOrganizer">
+                        <label class="form-check-label" for="isOrganizer">Sorties dont je suis l'organisateur</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="isRegistered">
+                        <label class="form-check-label" for="isRegistered">Sorties auquel je suis inscrit.e</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="isNotRegistered">
+                        <label class="form-check-label" for="isNotRegistered">Sorties dont je ne suis pas
+                            inscrit.e</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="isOver">
+                        <label class="form-check-label" for="isOver">Sorties passées</label>
+                    </div>
 
-        <button class="btn btn-primary mt-3">Rechercher</button>
-    </fieldset>
-</form>
-</div>
-<div class="col-9 my-5">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                <th>Clôture</th>
-                <th>Inscrit / Place</th>
-                <th>Etat</th>
-                <th>Inscrit</th>
-                <th>Organisateur</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for o in outings %}
+                    <button class="btn btn-primary mt-3" name="submit" value="submit">Rechercher</button>
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-9 my-5">
+            <table class="table table-striped">
+                <thead>
                 <tr>
-                    <td>{{o.name}}</td>
-                    <td>{{o.startDate | date('d/m/Y h:i')}}</td>
-                    <td>{{o.limitDate | date('d/m/Y')}}</td>
-                    <td>{{o.attendees|length}} / {{o.nbInscription}}</td>
-                    <td>{{o.state.libelle}}</td>
-                    <td>
-                        {% if app.user in o.attendees %}Inscrit {% endif %}
-                        {% if not app.user in o.attendees %}Non Inscrit {% endif %}
-                    </td>
-                    <td>{{o.organizer.firstname}}</td>
-                    <td></td>
+                    <th>Nom de la sortie</th>
+                    <th>Date de la sortie</th>
+                    <th>Clôture</th>
+                    <th>Inscrit / Place</th>
+                    <th>Etat</th>
+                    <th>Inscrit</th>
+                    <th>Organisateur</th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-</div>
+                </thead>
+                <tbody>
+                {% for o in outings %}
+                    <tr>
+                        <td>{{ o.name }}</td>
+                        <td>{{ o.startDate | date('d/m/Y h:i') }}</td>
+                        <td>{{ o.limitDate | date('d/m/Y') }}</td>
+                        <td>{{ o.attendees|length }} / {{ o.nbInscription }}</td>
+                        <td>{{ o.state.libelle }}</td>
+                        <td>
+                            {% if app.user in o.attendees %}Inscrit {% endif %}
+                            {% if not app.user in o.attendees %}Non Inscrit {% endif %}
+                        </td>
+                        <td>{{ o.organizer.firstname }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
