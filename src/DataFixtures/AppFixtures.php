@@ -143,10 +143,11 @@ class AppFixtures extends Fixture
 
         $campus = $this->manager->getRepository(Campus::class)->findAll();
         for ($i = 0; $i < 10; $i++) {
-
+            $fname = $this->faker->firstName;
             $user = new User();
-            $user->setFirstName($this->faker->firstName)
+            $user->setFirstName($fname)
                 ->setLastName($this->faker->lastName)
+                ->setPseudo($fname)
                 ->setEmail($this->faker->email)
                 ->setPhone($this->faker->mobileNumber)
                 ->setIsActive('1')
