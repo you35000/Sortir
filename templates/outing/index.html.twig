@@ -3,14 +3,15 @@
 {% block title %}Hello OutingController!{% endblock %}
 
 {% block main %}
-    <div class="row mx-2">
-        <div class="col-3 my-5">
+    <h2>Utilisateur conneté : {{ user.firstName }}</h2>
+    <div class="row">
+        <div class="col-3 my-5 bg-secondary text-light p-4">
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <button class="btn btn-primary">Rechercher</button>
             {{ form_end(form) }}
         </div>
-        <div class="col-9 my-5">
+        <div class="col-9 my-5 px-5">
             <table class="table table-striped">
                 <thead>
                 <tr>
