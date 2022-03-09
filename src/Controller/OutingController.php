@@ -25,7 +25,7 @@ class OutingController extends AbstractController
         $search = new SearchOuting();
         $form = $this->createForm(SearchFormType::class, $search);
         $form->handleRequest($req);
-        if ($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             $outings = $mgr->getRepository(Outing::class)->filters($search, $user);
         }
         //TODO : à mettre en place une fois les log en place
@@ -38,7 +38,7 @@ class OutingController extends AbstractController
             'user' => $user,
             'outings' => $outings,
             'campus' => $campus,
-            'form'=>$form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 }

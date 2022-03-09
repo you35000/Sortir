@@ -49,18 +49,34 @@ class OutingRepository extends ServiceEntityRepository
         }
     }
 
-    public function filters(SearchOuting $search, User $user){
+    public function filters(SearchOuting $search, User $user)
+    {
 
         $qb = $this->createQueryBuilder('o');
 
-        if ($search->getCampus()){
+        if ($search->getCampus()) {
             $qb->andWhere('o.campus = :campus')
-            ->setParameter('campus', $search->getCampus());
+                ->setParameter('campus', $search->getCampus());
         }
 
-        if ($search->getIsOrganizer()){
+        if ($search->getSearch()) {
+            $qb->andWhere('o.name Like :search')
+                ->setParameter('search', '%' . $search->getSearch() . '%');
+        }
+
+//        if ($search->getDateStarted()) {
+//            $qb->andWhere('o.startDate > :date')
+//                ->setParameter('date', $search->getDateStarted());
+//        }
+//
+//        if ($search->getDateEnded()) {
+//            $qb->andWhere('o.startDate < :date')
+//                ->setParameter('date', $search->getDateEnded());
+//        }
+
+        if ($search->getIsOrganizer()) {
             $qb->andWhere('o.organizer = :user')
-            ->setParameter('user',$user);
+                ->setParameter('user', $user);
         }
 
 //        if ($search->getIsRegistered()){
@@ -69,42 +85,12 @@ class OutingRepository extends ServiceEntityRepository
 //                ->setParameter('id', $user->getId());
 //        }
 
-        if ($search->getIsOver()){
+        if ($search->getIsOver()) {
             $qb->andWhere('o.startDate < CURRENT_DATE()');
         }
-
 
 
         $query = $qb->getQuery();
         return $query->execute();
     }
-
-    // /**
-    //  * @return Outing[] Returns an array of Outing objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Outing
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

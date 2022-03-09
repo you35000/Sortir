@@ -19,43 +19,46 @@ class SearchFormType extends AbstractType
     {
         $builder
             ->add('campus', EntityType::class, [
-                'class'=>Campus::class,
-                'choice_label'=>'name',
+                'class' => Campus::class,
+                'choice_label' => 'name',
                 'required' => false,
-                ])
-            ->add('search', null,[
-                'required'=>false,
-                'label'=>'Rechercher une sortie'
+                'placeholder' => false
             ])
-            ->add('dateStarted', DateType::class,[
-                'required'=>false,
+            ->add('search', null, [
+                'required' => false,
+                'label' => 'Rechercher une sortie'
+            ])
+            ->add('dateStarted', DateType::class, [
+                'required' => false,
                 'mapped' => false,
                 'widget' => 'single_text',
-//                'format' => 'dd-MM-YYYY',
-                'label'=> 'Entre'
+//                'format' => 'dd-MM-yyyy',
+                'label' => 'Entre',
+                'data' => new \DateTime()
+
             ])
-            ->add('dateEnded', DateType::class,[
-                'required'=>false,
+            ->add('dateEnded', DateType::class, [
+                'required' => false,
                 'mapped' => false,
                 'widget' => 'single_text',
-//                'format' => 'dd-MM-YYYY',
-            'label'=>'Et'
+//                'format' => 'dd-MM-yyyy',
+                'label' => 'Et',
             ])
             ->add('isOrganizer', CheckboxType::class, [
-                'label'=>'Sorties dont je suis l\'organisateur',
-                'required'=>false
+                'label' => 'Sorties dont je suis l\'organisateur',
+                'required' => false
             ])
             ->add('isRegistered', CheckboxType::class, [
-                'label'=>'Sorties auquelles je suis inscrit',
-                'required'=>false
+                'label' => 'Sorties auquelles je suis inscrit',
+                'required' => false
             ])
             ->add('isNotRegistered', CheckboxType::class, [
-                'label'=>'Sorties auquelles je ne suis pas inscrit',
-                'required'=>false
+                'label' => 'Sorties auquelles je ne suis pas inscrit',
+                'required' => false
             ])
             ->add('isOver', CheckboxType::class, [
-                'label'=>'Sorties passées',
-                'required'=>false
+                'label' => 'Sorties passées',
+                'required' => false
             ]);
 
     }

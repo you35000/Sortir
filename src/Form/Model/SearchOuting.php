@@ -10,12 +10,17 @@ class SearchOuting
 {
     private Campus $campus;
     private $search;
-    private DateType $dateStarted;
-    private DateType $dateEnded;
-    private $isOrganizer;
-    private $isRegistered;
-    private $isNotRegistered;
-    private $isOver;
+    private \DateTimeInterface $dateStarted;
+    private \DateTimeInterface $dateEnded;
+    private bool $isOrganizer;
+    private bool $isRegistered;
+    private bool $isNotRegistered;
+    private bool $isOver;
+
+    public function __construct()
+    {
+
+    }
 
     /**
      * @return Campus
@@ -26,19 +31,19 @@ class SearchOuting
     }
 
     /**
-     * @return DateType|null
+     * @return \DateTimeInterface
      */
-    public function getDateEnded(): DateType
+    public function getDateStarted(): \DateTimeInterface
     {
-        return $this->dateEnded;
+        return $this->dateStarted;
     }
 
     /**
-     * @return DateType|null
+     * @return \DateTimeInterface
      */
-    public function getDateStarted(): DateType
+    public function getDateEnded(): \DateTimeInterface
     {
-        return $this->dateStarted;
+        return $this->dateEnded;
     }
 
     /**
@@ -90,19 +95,19 @@ class SearchOuting
     }
 
     /**
-     * @param DateType $dateEnded
+     * @param \DateTimeInterface $dateStarted
      */
-    public function setDateEnded(DateType $dateEnded): void
+    public function setDateStarted(\DateTimeInterface $dateStarted): void
     {
-        $this->dateEnded = $dateEnded;
+        $this->dateStarted = $dateStarted;
     }
 
     /**
-     * @param DateType $dateStarted
+     * @param \DateTimeInterface $dateEnded
      */
-    public function setDateStarted(DateType $dateStarted): void
+    public function setDateEnded(\DateTimeInterface $dateEnded): void
     {
-        $this->dateStarted = $dateStarted;
+        $this->dateEnded = $dateEnded;
     }
 
     /**
