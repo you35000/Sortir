@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block titre %} Ajouter un profil {% endblock %}
+{% block title %} Ajouter un profil {% endblock %}
 
 
-{% block body %}
+{% block main %}
     <h2 class="text_center"> Mon Profil</h2>
 
     <div class="col-4 my-3">
         {# form #}
-        {{ form_start (formulaire)}}
+        {{ form_start (formulaire) }}
 
-        {{ form_widget (formulaire)}}
-        <button class="btn btn-primary" type="submit">Ajouter</button>
-        {{ form_end (formulaire)}}
+        {{ form_widget (formulaire) }}
+        <button class="btn btn-primary" type="submit">Modifier</button>
+        {{ form_end (formulaire) }}
         {# </form> #}
 
         <div class="col">
@@ -20,7 +20,6 @@
                 Retour
             </a>
         </div>
-
 
 
     </div>

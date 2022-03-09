@@ -36,6 +36,7 @@ class AppFixtures extends Fixture
         $this->addState();
         $this->addOuting();
     }
+
     public function addCitys()
     {
         /**
@@ -54,7 +55,6 @@ class AppFixtures extends Fixture
         }
         $this->manager->flush();
     }
-
 
 
     public function addPlace()
@@ -138,6 +138,7 @@ class AppFixtures extends Fixture
         $this->faker = Factory::create('fr_FR');
         $this->hasher = $passwordHasher;
     }
+
     public function addUser()
     {
 
@@ -148,11 +149,11 @@ class AppFixtures extends Fixture
             $user->setFirstName($fname)
                 ->setLastName($this->faker->lastName)
                 ->setPseudo($fname)
+                ->setRoles(['ROLE_USER'])
                 ->setEmail($this->faker->email)
                 ->setPhone($this->faker->mobileNumber)
                 ->setIsActive('1')
                 ->setCampus($this->faker->randomElement($campus))
-
                 ->setPassword($this->hasher->hashPassword($user, '123
                  '));
 

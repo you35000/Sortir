@@ -18,8 +18,6 @@ class UserController extends AbstractController
      */
     public function afficherProfil(User $user, Request $request): Response
     {
-//        $id = $request->get('id');
-//        $user = $userRepository->find($id);
         return $this->render('user/afficherProfil.html.twig', [
             'user' => $user
         ]);
@@ -31,18 +29,17 @@ class UserController extends AbstractController
 
     public function ajouterProfil(Request $req, EntityManagerInterface $em): Response
     {
-        $user = $em->getRepository(User::class)->find(92);
+        $user = $em->getRepository(User::class)->find(1);
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($req);
-        if ($form->isSubmitted())
-        {
+        if ($form->isSubmitted()) {
             $em->persist($user);
             $em->flush();
             return $this->redirectToRoute('app_outing');
         }
-        return  $this->render('user/monProfil.html.twig',[
-            'formulaire'=>$form->createView(),
-    ]);
+        return $this->render('user/monProfil.html.twig', [
+            'formulaire' => $form->createView(),
+        ]);
     }
 
 }

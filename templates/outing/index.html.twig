@@ -3,7 +3,7 @@
 {% block title %}Hello OutingController!{% endblock %}
 
 {% block main %}
-    <h2>Utilisateur conneté : {{ user.firstName }}</h2>
+    <h2>Utilisateur connecté : {{ user.firstName }}</h2>
     <div class="row">
         <div class="col-3 my-5 bg-secondary text-light p-4">
             {{ form_start(form) }}
@@ -27,7 +27,9 @@
                 {{ form_row(form.isNotRegistered) }}
                 {{ form_row(form.isOver) }}
             </div>
-            <button class="btn btn-primary">Rechercher</button>
+            <div class="text-center">
+                <button class="btn btn-primary">Rechercher</button>
+            </div>
             {{ form_end(form) }}
         </div>
         <div class="col-9 my-5 px-5">
