@@ -5,8 +5,11 @@ namespace App\Form;
 use App\Entity\Campus;
 use App\Form\Model\SearchOuting;
 use Doctrine\DBAL\Types\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,14 +18,42 @@ class SearchFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('campus', Campus::class)
-            ->add('search', TextType::class)
-            ->add('dateStarted', \DateTime::class)
-            ->add('dateEnded', \DateTime::class)
-            ->add('isOrganized', CheckboxType::class)
-            ->add('isRegistered', CheckboxType::class)
-            ->add('isNotRegistered', CheckboxType::class)
-            ->add('isOver', CheckboxType::class);
+            ->add('campus', EntityType::class, [
+                'class'=>Campus::class,
+                'choice_label'=>'name',
+                'required' => false,
+                ])
+            ->add('search', null,[
+                'required'=>false
+            ])
+            ->add('dateStarted', DateType::class,[
+                'required'=>false,
+                'mapped' => false,
+                'widget' => 'single_text',
+//                'format' => 'dd-MM-YYYY',
+            ])
+            ->add('dateEnded', DateType::class,[
+                'required'=>false,
+                'mapped' => false,
+                'widget' => 'single_text',
+//                'format' => 'dd-MM-YYYY',
+            ])
+            ->add('isOrganizer', CheckboxType::class, [
+                'label'=>'Sorties dont je suis l\'organisateur',
+                'required'=>false
+            ])
+            ->add('isRegistered', CheckboxType::class, [
+                'label'=>'Sorties auquelles je suis inscrit',
+                'required'=>false
+            ])
+            ->add('isNotRegistered', CheckboxType::class, [
+                'label'=>'Sorties auquelles je ne suis pas inscrit',
+                'required'=>false
+            ])
+            ->add('isOver', CheckboxType::class, [
+                'label'=>'Sorties passées',
+                'required'=>false
+            ]);
 
     }
 

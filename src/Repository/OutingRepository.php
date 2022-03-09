@@ -3,9 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Outing;
+use App\Entity\User;
+use App\Form\Model\SearchOuting;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,8 +26,8 @@ class OutingRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @param Outing $entity
+     * @param bool|bool $flush
      */
     public function add(Outing $entity, bool $flush = true): void
     {
@@ -43,6 +47,29 @@ class OutingRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    public function filters(SearchOuting $search, User $user){
+
+        $qb = $this->createQueryBuilder('o');
+
+        if ($search->getIsOrganizer()){
+            $qb->andWhere('o.organizer = :user')
+            ->setParameter('user',$user);
+        }
+//        if ($search->getIsRegistered()){
+//            $qb->from('outing_user')
+//                ->leftJoin(User::class,'u')
+//        }
+        dd($qb->getQuery());
+        if ($search->getIsOver()){
+            $qb->andWhere('o.startDate < CURRENT_DATE()');
+        }
+
+
+
+        $query = $qb->getQuery();
+        return $query->execute();
     }
 
     // /**

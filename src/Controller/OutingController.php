@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Entity\Outing;
+use App\Entity\User;
+use App\Form\Model\SearchOuting;
+use App\Form\SearchFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,37 +20,25 @@ class OutingController extends AbstractController
      */
     public function index(Request $req, EntityManagerInterface $mgr): Response
     {
-
-        if ($req->request->get('submit')) {
-            $searchCampus = $mgr->getRepository(Campus::class)->find($req->request->get('campus'));
-            $outings = $mgr->getRepository(Outing::class)->findBy(array('campus' => $searchCampus));
-            if ($req->request->get('dateStarted')) {
-                $dateStarted = date_create_from_format('Y-m-d', $req->request->get('dateStarted'));
-                $outings = array_filter($outings, (function ($o) use ($dateStarted) {
-                    if ($o->getStartDate() > $dateStarted) {
-                        return $o;
-                    }
-                }));
-            }
-            if ($req->request->get('dateEnded')) {
-                $dateEnded = date_create_from_format('Y-m-d', $req->request->get('dateEnded'));
-                $outings = array_filter($outings, (function ($o) use ($dateEnded) {
-                    if ($o->getStartDate() < $dateEnded) {
-                        return $o;
-                    }
-                }));
-            }
-        } else {
-            $outings = $mgr->getRepository(Outing::class)->findAll();
-            //TODO : à mettre en place une fois les log en place
-            //$outings = $mgr->getRepository(Outing::class)->findBy(array('campus' => $this->getUser()->getCampus()));
+        $user = $mgr->getRepository(User::class)->find(1);
+        $outings = $mgr->getRepository(Outing::class)->findAll();
+        $search = new SearchOuting();
+        $form = $this->createForm(SearchFormType::class, $search);
+        $form->handleRequest($req);
+        if ($form->isSubmitted()){
+            $outings = $mgr->getRepository(Outing::class)->filters($search, $user);
         }
+        //TODO : à mettre en place une fois les log en place
+        //$outings = $mgr->getRepository(Outing::class)->findBy(array('campus' => $this->getUser()->getCampus()));
+
         $campus = $mgr->getRepository(Campus::class)->findAll();
 
         return $this->render('outing/index.html.twig', [
             'controller_name' => 'OutingController',
+            'user' => $user,
             'outings' => $outings,
             'campus' => $campus,
+            'form'=>$form->createView(),
         ]);
     }
 }
