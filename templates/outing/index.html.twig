@@ -5,7 +5,7 @@
 {% block body %}
     <div class="row mx-2">
         <div class="col-3 my-5">
-            <form action="{{ path('app_outing') }}" method="GET">
+            <form action="{{ path('app_outing') }}" method="POST">
                 <fieldset>
                     <legend>Filtrer les sorties</legend>
                     <div class="mb-3 row">
@@ -21,19 +21,19 @@
                     <div class="mb-3 row">
                         <label class="col-4 col-form-label" for="search">Recherche</label>
                         <div class="col-8">
-                            <input class="form-control" id="search" type="text" placeholder="Patinoire"/>
+                            <input class="form-control" id="search" name="search" type="text" placeholder="Patinoire"/>
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-2 col-form-label" for="dateStarted">Entre</label>
                         <div class="col-10">
-                            <input type="date" id="dateStarted">
+                            <input type="date" id="dateStarted" name="dateStarted">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label class="col-2 col-form-label" for="dateEnded">Et</label>
                         <div class="col-10">
-                            <input type="date" id="dateEnded">
+                            <input type="date" id="dateEnded" name="dateEnded">
                         </div>
                     </div>
                     <div class="form-check">
