@@ -1,26 +1,85 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{outing.name}}{% endblock %}
+{% block title %}{{ outing.name }}{% endblock %}
 
 {% block main %}
-<div class="col-6 offset-3">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">{{ outing.name }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ outing.organizer.pseudo }}</h6>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">
-                    Campus : {{ outing.campus.name }}
-                </li>
-                <li class="list-group-item">
-                    Date et heure : {{ outing.startDate |date('d M y h:i') }}
-                </li>
-                <li class="list-group-item">
-                    Date limite d'inscription : {{ outing.limitDate | date('d M Y') }}
-                </li>
-            </ul>
-            <p class="card-text">{{ outing.outingInfo}}</p>
+    <div class="col-6 offset-3">
+        <div class="card border-dark">
+            <div class="card-header d-flex justify-content-between">
+                <h5>Campus : {{ outing.campus.name }}</h5>
+                <h6>Organisé par : {{ outing.organizer.pseudo }}</h6>
+            </div>
+            <div class="card-body">
+                <h5 class="text-center card-title display-2">{{ outing.name }}</h5>
+                <div class="row mt-5">
+                    <div class="col-6">
+                        <h6 class="text-center">Organisation</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-6">Date et heure :</div>
+                                    <div class="col-6">{{ outing.startDate |date('d M Y à H:i') }}</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-6">Date limite d'inscription :</div>
+                                    <div class="col-6">{{ outing.limitDate | date('d M Y') }}</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-6">Nb de places restantes :</div>
+                                    <div class="col-6">{{ outing.nbInscription-outing.attendees.count }}
+                                        / {{ outing.nbInscription }}</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-6">Durée :</div>
+                                    <div class="col-6">{{ outing.duration }} minutes</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <h6 class="text-center">Lieu</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-6">Lieu :</div>
+                                    <div class="col-6">{{ outing.place.name }}</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-6">Rue :</div>
+                                    <div class="col-6">{{ outing.place.street }}</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-6">Code postal :</div>
+                                    <div class="col-6">{{ outing.place.city.postCode }}</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-6">Ville :</div>
+                                    <div class="col-6">{{ outing.place.city.name }}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% if outing.outingInfo %}
+                    <div class="mt-5">
+                        <h6>Description</h6>
+                        <p class="card-text">{{ outing.outingInfo }}</p>
+                    </div>
+                {% endif %}
+
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
