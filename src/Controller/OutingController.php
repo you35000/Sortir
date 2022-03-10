@@ -87,7 +87,7 @@ class OutingController extends AbstractController
      */
     public function register(Outing $outing, EntityManagerInterface $em): Response
     {
-        if ($outing->getAttendees()->contains($this->getUser())) {
+        if (($outing->getAttendees()->contains($this->getUser())) || ($outing->getAttendees()->count() == $outing->getNbInscription())) {
             return $this->redirectToRoute('app_outing');
         } else {
             $outing->addAttendee($this->getUser());
