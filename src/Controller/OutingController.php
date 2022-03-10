@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Entity\Outing;
 use App\Entity\User;
-use App\Entity\State;
 use App\Form\Model\SearchOuting;
 use App\Form\SearchFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,8 +23,7 @@ class OutingController extends AbstractController
      */
     public function index(Request $req, EntityManagerInterface $mgr): Response
     {
-        $outings = $mgr->getRepository(Outing::class)->findAllNotHistorized($this->getUser());
-        $campus = $mgr->getRepository(Campus::class)->findAll();
+        $outings = $mgr->getRepository(Outing::class)->findAllNotHistorized();
 
         $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($req);
@@ -34,11 +32,15 @@ class OutingController extends AbstractController
             $outings = $mgr->getRepository(Outing::class)->filters($search, $this->getUser());
         }
 
+        $outings = $mgr->getRepository(Outing::class)->findBy(array('campus' => $this->getUser()->getCampus()));
+        $campus = $mgr->getRepository(Campus::class)->findAll();
+
         return $this->render('outing/index.html.twig', [
             'controller_name' => 'OutingController',
             'outings' => $outings,
             'campus' => $campus,
             'form' => $form->createView(),
+
         ]);
     }
 
@@ -62,4 +64,19 @@ class OutingController extends AbstractController
 
         return $this->redirectToRoute('app_outing');
     }
+
+    /**
+     * @Route ("/withdraw_outing/{id}", name="withdraw")
+     */
+    public function withdrawOuting(int $id, OutingRepository $outingRepository, EntityManagerInterface $entityManager): Response
+    {
+        $outing = $outingRepository->find($id);
+        dd($outing);
+        $currentUser = $this->getUser();
+        $currentUser->withdrawOuting($outing);
+        $entityManager->flush();
+
+        return $this->render('outing/index.html.twig', ['outing' => $outing,]);
+    }
+
 }
