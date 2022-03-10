@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Faker\Provider\Image;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -63,18 +64,22 @@ class UserFormType extends AbstractType
             ->add('campus',null,['choice_label'=>'name'])
 
             ->add('picture', FileType::class, [
+                'label' => 'Ma photo :',
                 'required' => false,
                 'mapped' => false,
-
-                'label' => 'Ma photo :',
             ]);
 
-        $builder->add('submit', SubmitType::class, [
-            'label' => 'Enregistrer',
-            'attr' => array(
-                'class' => 'btn btn-outline-secondary',
-            )
-        ]);
+//        $builder->add('submit', SubmitType::class, [
+//            'label' => 'Enregistrer',
+//            'attr' => array(
+//                'class' => 'btn btn-outline-secondary',)
+//        ]);
+//        $builder->add('button', ButtonType::class, [
+//            'label' => 'Annuler',
+//            'attr' => array(
+//            'class' => 'btn btn-outline-secondary',)
+//
+//        ]);
 
 
 

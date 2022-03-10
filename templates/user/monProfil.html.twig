@@ -1,32 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} ajouter modifier Profil {% endblock %}
+{% block title %} Ajouter modifier Profil {% endblock %}
 
 
 {% block main %}
-    <h2 class="text_center"> Mon Profil</h2>
-{#    {% form_theme UserFormType 'bootstrap_5_horizontal_layout.html.twig' %}#}
 
-    <div class="col-3 my-4">
-        {# form #}
-        {{ form_start (formulaire) }}
-
-        {{ form_widget (formulaire) }}
-        <button class="btn btn-primary" type="submit">Modifier</button>
-
-        {{ form_end (formulaire) }}
-        {# </form> #}
-
-        <div class="col">
-            <a href="{{ path('app_outing') }}" title="Sortir.com | Home">
-                Retour
-            </a>
-        </div>
-
-
+    <div class="row justify-content-center align-items-center">
+        <h2 class="text_center"> Mon Profil</h2>
     </div>
 
+    <div class="container">
+    <div class="col-4 ">
+        <img class="profil" src="{{ asset('image/profil.png') }}" width="200" alt="profil">
+        {#            <img src="{{ asset('uploads/user_image/' ~  user.picture) }}"> #}
+    </div>
 
+    <div class="row justify-content-center align-items-center">
+
+        <div class="col-4 my-4">
+
+            {{ form_start (formulaire) }}
+
+            {{ form_widget (formulaire) }}
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4 offset-2 ">
+                        <div>
+                        <button class="btn btn-primary" type="submit">Ajouter</button>
+                        </div>
+                            <div>
+
+                            <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary"
+                               style="width: 130px">Retour</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            {{ form_end (formulaire) }}
+        </div>
+
+    </div>
 
 
 
