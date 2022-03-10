@@ -11,11 +11,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\OutingRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
-* @Route("/internal")
-*/
+ * @Route("/internal")
+ */
 class OutingController extends AbstractController
 {
     /**
@@ -40,6 +41,22 @@ class OutingController extends AbstractController
             'outings' => $outings,
             'campus' => $campus,
             'form' => $form->createView(),
+
         ]);
     }
+
+    /**
+     * @Route ("/withdraw_outing/{id}", name="withdraw")
+     */
+    public function withdrawOuting(int $id, OutingRepository $outingRepository, EntityManagerInterface $entityManager): Response
+    {
+        $outing = $outingRepository->find($id);
+        dd($outing);
+        $currentUser = $this->getUser();
+        $currentUser->withdrawOuting($outing);
+        $entityManager->flush();
+
+        return $this->render('outing/index.html.twig', ['outing' => $outing,]);
+    }
+
 }
