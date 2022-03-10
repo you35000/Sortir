@@ -182,7 +182,7 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
         $states = $this->manager->getRepository(State::class)->findAll();
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $startDate = new DateTime();
             $startDate = $faker->dateTimeThisYear();
             $outing = new Outing();
@@ -191,7 +191,7 @@ class AppFixtures extends Fixture
                 ->setDuration(($faker->numberBetween(6, 30))*10);
 
             $date = clone $outing->getStartDate();
-            $date->modify($faker->numberBetween(1,7)." day");
+            $date->modify($faker->numberBetween(-7,-2)." days");
             $outing->setLimitDate($date)
                 ->setNbInscription($faker->numberBetween(2, 20))
                 ->setOrganizer($faker->randomElement($this->manager->getRepository(User::class)->findAll()))
@@ -201,7 +201,7 @@ class AppFixtures extends Fixture
             //Gestion de l'état selon la date :
 
             //Activité en cours
-            if ($outing->getStartDate()<new DateTime("now")){
+            if ($outing->getStartDate()<new DateTime("now") && new DateTime('now')<date_add($outing->getStartDate(), date_interval_create_from_date_string($outing->getDuration().' minutes'))){
                 $outing->setState($states[3]);
             }
             //Activité passée
@@ -214,7 +214,7 @@ class AppFixtures extends Fixture
                 $outing->setState($states[6]);
             }
 
-            //Activité ouverte
+            //Activité Cloturée
             elseif(new DateTime()<$outing->getStartDate() && new DateTime()>$outing->getLimitDate()){
                 $outing->setState($states[2]);
             }
@@ -227,6 +227,7 @@ class AppFixtures extends Fixture
                 $outing->setState($faker->randomElement($othersStates));
             }
 
+            //TODO: Ajouter des participants;
             $this->manager->persist($outing);
         }
 

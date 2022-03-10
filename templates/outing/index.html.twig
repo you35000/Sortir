@@ -8,7 +8,7 @@
             {{ form_start(form) }}
             <div class="row">
                 <div class="col-6">
-                    {{ form_row(form.campus) }}
+                    {{ form_row(form.campus, {value: app.user.campus.name ~ ""}) }}
                 </div>
                 <div class="col-6">
                     {{ form_row(form.search) }}
@@ -48,7 +48,7 @@
                 <tbody>
                 {% for o in outings %}
                     <tr>
-                        <td>{{ o.name }}</td>
+                        <td><a href="{{ path('outing_details',{'id':o.id}) }}">{{ o.name }}</a></td>
                         <td>{{ o.startDate | date('d/m/Y h:i') }}</td>
                         <td>{{ o.limitDate | date('d/m/Y') }}</td>
                         <td>{{ o.attendees|length }} / {{ o.nbInscription }}</td>

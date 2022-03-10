@@ -50,9 +50,13 @@ class OutingRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAllNotHistorized(){
-        return $this->createQueryBuilder('o')->where('o.state <> :state')
-            ->setParameter('state',$this->getEntityManager()->getRepository(State::class)->find(7))
+    public function findAllNotHistorized(User $user){
+        return $this->createQueryBuilder('o')
+            ->where('o.startDate > :dateNow')
+            ->setParameter('dateNow',new \DateTime())
+            ->andWhere('o.campus = :campus')
+            ->setParameter('campus', $user->getCampus())
+            ->orderBy('o.startDate', 'ASC')
             ->getQuery()->execute();
     }
 
@@ -86,15 +90,21 @@ class OutingRepository extends ServiceEntityRepository
                 ->setParameter('user', $user);
         }
 
-//        if ($search->getIsRegistered()){
-//            $qb->join('outing_user','ou')
-//                ->add('where', 'ou.user_id = :id')
-//                ->setParameter('id', $user->getId());
-//        }
+        if ($search->getIsRegistered()){
+            $qb->andWhere(':user MEMBER OF o.attendees')
+                ->setParameter('user', $user);
+        }
+
+        if ($search->getIsNotRegistered()){
+            $qb->andWhere(':user NOT MEMBER OF o.attendees')
+                ->setParameter('user', $user);
+        }
 
         if ($search->getIsOver()) {
             $qb->andWhere('o.startDate < CURRENT_DATE()');
         }
+
+        $qb->orderBy('o.startDate', 'ASC');
 
 
         $query = $qb->getQuery();
