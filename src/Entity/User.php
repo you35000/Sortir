@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $lastName;
 
-   
+
 
     /**
      * @ORM\Column(type="boolean")
