@@ -146,7 +146,7 @@ class AppFixtures extends Fixture
         $user->setFirstName('Toto')
             ->setLastName('Dupont')
             ->setPseudo('Toto D.')
-            ->setRoles(['ROLE_USER'])
+            ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
             ->setEmail('toto.dupont@gmail.com')
             ->setPhone($this->faker->mobileNumber)
             ->setIsActive('1')
@@ -158,7 +158,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 10; $i++) {
             $fname = $this->faker->firstName;
             $lname = $this->faker->lastName;
-            $pseudo = $fname.' '.substr($lname, 0,1 ).'.';
+            $pseudo = $fname . ' ' . substr($lname, 0, 1) . '.';
 //            $email = strtolower($fname).'.'.strtolower($lname).'@free.fr';
             $user = new User();
             $user->setFirstName($fname)
@@ -186,12 +186,12 @@ class AppFixtures extends Fixture
             $startDate = new DateTime();
             $startDate = $faker->dateTimeThisYear();
             $outing = new Outing();
-            $outing->setName('Outing' . ($i+1))
+            $outing->setName('Outing' . ($i + 1))
                 ->setStartDate(date_add($startDate, date_interval_create_from_date_string('9 months')))
-                ->setDuration(($faker->numberBetween(6, 30))*10);
+                ->setDuration(($faker->numberBetween(6, 30)) * 10);
 
             $date = clone $outing->getStartDate();
-            $date->modify($faker->numberBetween(-7,-2)." days");
+            $date->modify($faker->numberBetween(-7, -2) . " days");
             $outing->setLimitDate($date)
                 ->setNbInscription($faker->numberBetween(2, 20))
                 ->setOrganizer($faker->randomElement($this->manager->getRepository(User::class)->findAll()))
@@ -201,29 +201,22 @@ class AppFixtures extends Fixture
             //Gestion de l'état selon la date :
 
             //Activité en cours
-            if ($outing->getStartDate()<new DateTime("now") && new DateTime('now')<date_add($outing->getStartDate(), date_interval_create_from_date_string($outing->getDuration().' minutes'))){
+            if ($outing->getStartDate() < new DateTime("now") && new DateTime('now') < date_add($outing->getStartDate(), date_interval_create_from_date_string($outing->getDuration() . ' minutes'))) {
                 $outing->setState($states[3]);
-            }
-            //Activité passée
-            elseif (date_add($outing->getStartDate(), date_interval_create_from_date_string($outing->getDuration().' minutes'))<new DateTime('now')){
+            } //Activité passée
+            elseif (date_add($outing->getStartDate(), date_interval_create_from_date_string($outing->getDuration() . ' minutes')) < new DateTime('now')) {
                 $outing->setState($states[4]);
-            }
-
-            //Activité historisée
-            elseif (date_add($outing->getStartDate(), date_interval_create_from_date_string('1 month'))<new DateTime('now')){
+            } //Activité historisée
+            elseif (date_add($outing->getStartDate(), date_interval_create_from_date_string('1 month')) < new DateTime('now')) {
                 $outing->setState($states[6]);
-            }
-
-            //Activité Cloturée
-            elseif(new DateTime()<$outing->getStartDate() && new DateTime()>$outing->getLimitDate()){
+            } //Activité Cloturée
+            elseif (new DateTime() < $outing->getStartDate() && new DateTime() > $outing->getLimitDate()) {
                 $outing->setState($states[2]);
-            }
-
-            //Autre random
-            else{
-                $othersStates[]=$states[0];
-                $othersStates[]=$states[1];
-                $othersStates[]=$states[5];
+            } //Autre random
+            else {
+                $othersStates[] = $states[0];
+                $othersStates[] = $states[1];
+                $othersStates[] = $states[5];
                 $outing->setState($faker->randomElement($othersStates));
             }
 
