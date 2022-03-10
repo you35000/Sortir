@@ -32,7 +32,7 @@ class SearchFormType extends AbstractType
                 'widget' => 'single_text',
 //                'format' => 'dd-MM-yyyy',
                 'label' => 'Entre',
-                'data'=>new \DateTime(),
+                'data' => new \DateTime(),
 
             ])
             ->add('dateEnded', DateType::class, [
@@ -40,6 +40,7 @@ class SearchFormType extends AbstractType
                 'widget' => 'single_text',
 //                'format' => 'dd-MM-yyyy',
                 'label' => 'Et',
+
             ])
             ->add('isOrganizer', CheckboxType::class, [
                 'label' => 'Sorties dont je suis l\'organisateur',

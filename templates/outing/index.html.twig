@@ -4,7 +4,7 @@
 
 {% block main %}
     <div class="row">
-        <div class="col-3 my-5 bg-secondary text-light p-4">
+        <div class="col-3 my-5 bg-dark text-light p-4">
             {{ form_start(form) }}
             <div class="row">
                 <div class="col-6">
@@ -31,9 +31,9 @@
             </div>
             {{ form_end(form) }}
         </div>
-        <div class="col-9 my-5 px-5">
-            <table class="table table-striped">
-                <thead>
+        <div class="col-9 my-5 px-5 ">
+            <table class="table table-hover table-light table-striped">
+                <thead class="table-dark">
                 <tr>
                     <th>Nom de la sortie</th>
                     <th>Date de la sortie</th>
@@ -48,12 +48,12 @@
                 </thead>
                 <tbody>
                 {% for o in outings %}
-{#                    {% if ((o.state.libelle == 'Créee')and(app.user == o.organizer)) or (()and())%}#}
+                    {#                    {% if ((o.state.libelle == 'Créee')and(app.user == o.organizer)) or (()and())%} #}
 
-{#                    {% endif %}#}
+                    {#                    {% endif %} #}
                     <tr>
                         <td><a href="{{ path('outing_details',{'id':o.id}) }}">{{ o.name }}</a></td>
-                        <td>{{ o.startDate | date('d/m/Y h:i') }}</td>
+                        <td>{{ o.startDate | date('d/m/Y H:i') }}</td>
                         <td>{{ o.limitDate | date('d/m/Y') }}</td>
                         <td>{{ o.attendees|length }} / {{ o.nbInscription }}</td>
                         <td>{{ o.state.libelle }}</td>
@@ -64,8 +64,21 @@
                         <td>{{ o.organizer.firstname }}</td>
                         <td>
                             {% if (o.organizer == app.user) and (o.state.libelle == 'Créée') %}
-                                <a href="{{ path('outing_published',{'id':o.id}) }}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Publier">
+                                <a href="{{ path('outing_published',{'id':o.id}) }}" class="btn btn-success"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Publier">
                                     <i class="fa fa-bullhorn"></i>
+                                </a>
+                            {% endif %}
+                            {% if (app.user in o.attendees) and (o.state.libelle == 'Ouverte') or (o.state.libelle == 'Cloturée') %}
+                                <a href="{{ path('withdraw',{'id':o.id}) }}" class="btn btn-danger"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Se désister">
+                                    <i class="fa fa-user-minus"></i>
+                                </a>
+                            {% endif %}
+                            {% if (app.user not in o.attendees) and (o.state.libelle == 'Ouverte') %}
+                                <a href="{{ path('register',{'id':o.id}) }}" class="btn btn-primary"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="S'inscrire">
+                                    <i class="fa fa-user-plus"></i>
                                 </a>
                             {% endif %}
                         </td>

@@ -69,7 +69,7 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route ("/withdraw_outing/{id}", name="withdraw")
+     * @Route ("/withdraw-outing/{id}", name="withdraw")
      */
     public function withdrawOuting(int $id, OutingRepository $outingRepository, EntityManagerInterface $entityManager): Response
     {
@@ -80,6 +80,21 @@ class OutingController extends AbstractController
         $entityManager->flush();
 
         return $this->render('outing/index.html.twig', ['outing' => $outing,]);
+    }
+
+    /**
+     * @Route ("/register-outing/{id}", name="register")
+     */
+    public function register(Outing $outing, EntityManagerInterface $em): Response
+    {
+        if ($outing->getAttendees()->contains($this->getUser())) {
+            return $this->redirectToRoute('app_outing');
+        } else {
+            $outing->addAttendee($this->getUser());
+            $em->persist($outing);
+            $em->flush();
+            return $this->redirectToRoute('app_outing');
+        }
     }
 
 }
