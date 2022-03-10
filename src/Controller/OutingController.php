@@ -11,12 +11,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Repository\OutingRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/internal")
- */
+* @Route("/internal")
+*/
 class OutingController extends AbstractController
 {
     /**
@@ -43,6 +42,27 @@ class OutingController extends AbstractController
             'form' => $form->createView(),
 
         ]);
+    }
+
+    /**
+     * @Route("/outing_details/{id}", name="outing_details")
+     */
+    public function details(Outing $outing, EntityManagerInterface $mgr){
+        return $this->render('outing/detail.html.twig',[
+            'outing'=>$outing,
+        ]);
+    }
+
+    /**
+     * @Route("/published/{id}", name="outing_published")
+     */
+    public function published(Outing $outing, EntityManagerInterface $mgr){
+        $outing->setState($mgr->getRepository(State::class)->findOneBy(['libelle'=>'Ouverte']));
+
+        $mgr->persist($outing);
+        $mgr->flush();
+
+        return $this->redirectToRoute('app_outing');
     }
 
     /**

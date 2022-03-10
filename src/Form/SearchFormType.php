@@ -22,7 +22,6 @@ class SearchFormType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'name',
                 'required' => false,
-                'placeholder' => false
             ])
             ->add('search', null, [
                 'required' => false,
@@ -32,7 +31,8 @@ class SearchFormType extends AbstractType
                 'required' => false,
                 'widget' => 'single_text',
 //                'format' => 'dd-MM-yyyy',
-                'label' => 'Entre'
+                'label' => 'Entre',
+                'data'=>new \DateTime(),
 
             ])
             ->add('dateEnded', DateType::class, [

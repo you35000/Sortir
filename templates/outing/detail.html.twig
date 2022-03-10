@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{outing.name}}{% endblock %}
+
+{% block main %}
+<div class="col-6 offset-3">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ outing.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ outing.organizer.pseudo }}</h6>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    Campus : {{ outing.campus.name }}
+                </li>
+                <li class="list-group-item">
+                    Date et heure : {{ outing.startDate |date('d M y h:i') }}
+                </li>
+                <li class="list-group-item">
+                    Date limite d'inscription : {{ outing.limitDate | date('d M Y') }}
+                </li>
+            </ul>
+            <p class="card-text">{{ outing.outingInfo}}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
