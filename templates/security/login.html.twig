@@ -10,9 +10,9 @@
             {% endif %}
 
             {% if app.user %}
-                <div class="mb-3">
-                    Vous êtes connecté en tant que {{ app.user.pseudo }}, <a href="{{ path('app_logout') }}"
-                                                                             class="badge bg-light">Se
+                <div class="alert alert-success mb-3 text-center">
+                    Vous êtes déjà connecté en tant que {{ app.user.pseudo }} <a href="{{ path('app_logout') }}"
+                                                                                 class="badge bg-light ms-4 text-secondary">Se
                         déconnecter</a>
                 </div>
             {% endif %}

@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Entity\Outing;
 use App\Entity\User;
+use App\Entity\State;
 use App\Form\Model\SearchOuting;
 use App\Form\SearchFormType;
+use App\Repository\OutingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
-* @Route("/internal")
-*/
+ * @Route("/internal")
+ */
 class OutingController extends AbstractController
 {
     /**
@@ -23,7 +25,9 @@ class OutingController extends AbstractController
      */
     public function index(Request $req, EntityManagerInterface $mgr): Response
     {
-        $outings = $mgr->getRepository(Outing::class)->findAllNotHistorized();
+
+        $outings = $mgr->getRepository(Outing::class)->findAllNotHistorized($this->getUser());
+        $campus = $mgr->getRepository(Campus::class)->findAll();
 
         $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($req);
@@ -31,9 +35,6 @@ class OutingController extends AbstractController
             $search = $form->getData();
             $outings = $mgr->getRepository(Outing::class)->filters($search, $this->getUser());
         }
-
-        $outings = $mgr->getRepository(Outing::class)->findBy(array('campus' => $this->getUser()->getCampus()));
-        $campus = $mgr->getRepository(Campus::class)->findAll();
 
         return $this->render('outing/index.html.twig', [
             'controller_name' => 'OutingController',
@@ -47,17 +48,19 @@ class OutingController extends AbstractController
     /**
      * @Route("/outing_details/{id}", name="outing_details")
      */
-    public function details(Outing $outing, EntityManagerInterface $mgr){
-        return $this->render('outing/detail.html.twig',[
-            'outing'=>$outing,
+    public function details(Outing $outing, EntityManagerInterface $mgr)
+    {
+        return $this->render('outing/detail.html.twig', [
+            'outing' => $outing,
         ]);
     }
 
     /**
      * @Route("/published/{id}", name="outing_published")
      */
-    public function published(Outing $outing, EntityManagerInterface $mgr){
-        $outing->setState($mgr->getRepository(State::class)->findOneBy(['libelle'=>'Ouverte']));
+    public function published(Outing $outing, EntityManagerInterface $mgr)
+    {
+        $outing->setState($mgr->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
 
         $mgr->persist($outing);
         $mgr->flush();
