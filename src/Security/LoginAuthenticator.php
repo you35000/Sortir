@@ -58,4 +58,8 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+    public function supports(Request $request): bool
+    {
+        return $request->isMethod('POST') && self::LOGIN_ROUTE == $request->get("_route");
+    }
 }

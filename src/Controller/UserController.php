@@ -29,8 +29,8 @@ class UserController extends AbstractController
 
     public function ajouterProfil(Request $req, EntityManagerInterface $em): Response
     {
-        $user = $em->getRepository(User::class)->find(1);
-        $form = $this->createForm(UserFormType::class, $user);
+
+        $form = $this->createForm(UserFormType::class, $this->getUser());
         $form->handleRequest($req);
         if ($form->isSubmitted()) {
             $em->persist($user);
