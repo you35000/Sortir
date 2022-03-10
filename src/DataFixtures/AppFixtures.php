@@ -154,8 +154,7 @@ class AppFixtures extends Fixture
                 ->setPhone($this->faker->mobileNumber)
                 ->setIsActive('1')
                 ->setCampus($this->faker->randomElement($campus))
-                ->setPassword($this->hasher->hashPassword($user, '123
-                 '));
+                ->setPassword($this->hasher->hashPassword($user, '123456'));
 
             $this->manager->persist($user);
         }
