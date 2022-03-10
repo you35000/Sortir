@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+* @Route("/internal")
+*/
 class OutingController extends AbstractController
 {
     /**
@@ -20,23 +23,20 @@ class OutingController extends AbstractController
      */
     public function index(Request $req, EntityManagerInterface $mgr): Response
     {
-        $user = $mgr->getRepository(User::class)->find(1);
         $outings = $mgr->getRepository(Outing::class)->findAllNotHistorized();
 
         $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($req);
         if ($form->isSubmitted()) {
             $search = $form->getData();
-            $outings = $mgr->getRepository(Outing::class)->filters($search, $user);
+            $outings = $mgr->getRepository(Outing::class)->filters($search, $this->getUser());
         }
-        //TODO : à mettre en place une fois les log en place
-        //$outings = $mgr->getRepository(Outing::class)->findBy(array('campus' => $this->getUser()->getCampus()));
 
+        $outings = $mgr->getRepository(Outing::class)->findBy(array('campus' => $this->getUser()->getCampus()));
         $campus = $mgr->getRepository(Campus::class)->findAll();
 
         return $this->render('outing/index.html.twig', [
             'controller_name' => 'OutingController',
-            'user' => $user,
             'outings' => $outings,
             'campus' => $campus,
             'form' => $form->createView(),
