@@ -47,6 +47,9 @@
                 </thead>
                 <tbody>
                 {% for o in outings %}
+{#                    {% if ((o.state.libelle == 'Créee')and(app.user == o.organizer)) or (()and())%}#}
+
+{#                    {% endif %}#}
                     <tr>
                         <td><a href="{{ path('outing_details',{'id':o.id}) }}">{{ o.name }}</a></td>
                         <td>{{ o.startDate | date('d/m/Y h:i') }}</td>
@@ -58,7 +61,13 @@
                             {% if not app.user in o.attendees %}Non Inscrit {% endif %}
                         </td>
                         <td>{{ o.organizer.firstname }}</td>
-                        <td></td>
+                        <td>
+                            {% if (o.organizer == app.user) and (o.state.libelle == 'Créée') %}
+                                <a href="{{ path('outing_published',{'id':o.id}) }}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Publier">
+                                    <i class="fa fa-bullhorn"></i>
+                                </a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

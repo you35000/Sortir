@@ -56,7 +56,10 @@ class OutingController extends AbstractController
      */
     public function published(Outing $outing, EntityManagerInterface $mgr){
         $outing->setState($mgr->getRepository(State::class)->findOneBy(['libelle'=>'Ouverte']));
+
         $mgr->persist($outing);
         $mgr->flush();
+
+        return $this->redirectToRoute('app_outing');
     }
 }
