@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Outing;
 use App\Entity\User;
+use App\Entity\State;
 use App\Form\Model\SearchOuting;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -49,6 +50,12 @@ class OutingRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllNotHistorized(){
+        return $this->createQueryBuilder('o')->where('o.state <> :state')
+            ->setParameter('state',$this->getEntityManager()->getRepository(State::class)->find(7))
+            ->getQuery()->execute();
+    }
+
     public function filters(SearchOuting $search, User $user)
     {
 
@@ -64,15 +71,15 @@ class OutingRepository extends ServiceEntityRepository
                 ->setParameter('search', '%' . $search->getSearch() . '%');
         }
 
-//        if ($search->getDateStarted()) {
-//            $qb->andWhere('o.startDate > :date')
-//                ->setParameter('date', $search->getDateStarted());
-//        }
-//
-//        if ($search->getDateEnded()) {
-//            $qb->andWhere('o.startDate < :date')
-//                ->setParameter('date', $search->getDateEnded());
-//        }
+        if (!is_null($search->getDateStarted())) {
+                $qb->andWhere('o.startDate > :datestart')
+                ->setParameter('datestart', $search->getDateStarted());
+        }
+
+        if (!is_null($search->getDateEnded())) {
+            $qb->andWhere('o.startDate < :dateend')
+                ->setParameter('dateend', $search->getDateEnded());
+        }
 
         if ($search->getIsOrganizer()) {
             $qb->andWhere('o.organizer = :user')

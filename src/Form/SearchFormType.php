@@ -30,16 +30,13 @@ class SearchFormType extends AbstractType
             ])
             ->add('dateStarted', DateType::class, [
                 'required' => false,
-                'mapped' => false,
                 'widget' => 'single_text',
 //                'format' => 'dd-MM-yyyy',
-                'label' => 'Entre',
-                'data' => new \DateTime()
+                'label' => 'Entre'
 
             ])
             ->add('dateEnded', DateType::class, [
                 'required' => false,
-                'mapped' => false,
                 'widget' => 'single_text',
 //                'format' => 'dd-MM-yyyy',
                 'label' => 'Et',

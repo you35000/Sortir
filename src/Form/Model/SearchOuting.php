@@ -3,151 +3,147 @@
 namespace App\Form\Model;
 
 use App\Entity\Campus;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class SearchOuting
 {
-    private Campus $campus;
-    private $search;
-    private \DateTimeInterface $dateStarted;
-    private \DateTimeInterface $dateEnded;
-    private bool $isOrganizer;
-    private bool $isRegistered;
-    private bool $isNotRegistered;
-    private bool $isOver;
-
-    public function __construct()
-    {
-
-    }
+    private ?Campus $campus = null;
+    private ?string $search = null;
+    private ?DateTimeInterface $dateStarted = null;
+    private ?DateTimeInterface $dateEnded = null;
+    private ?bool $isOrganizer = null;
+    private ?bool $isRegistered = null;
+    private ?bool $isNotRegistered = null;
+    private ?bool $isOver = null;
 
     /**
-     * @return Campus
+     * @return Campus|null
      */
-    public function getCampus(): Campus
+    public function getCampus(): ?Campus
     {
         return $this->campus;
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return string|null
      */
-    public function getDateStarted(): \DateTimeInterface
-    {
-        return $this->dateStarted;
-    }
-
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getDateEnded(): \DateTimeInterface
-    {
-        return $this->dateEnded;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsNotRegistered(): bool
-    {
-        return $this->isNotRegistered;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsOrganizer(): bool
-    {
-        return $this->isOrganizer;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsOver(): bool
-    {
-        return $this->isOver;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsRegistered(): bool
-    {
-        return $this->isRegistered;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSearch()
+    public function getSearch(): ?string
     {
         return $this->search;
     }
 
     /**
-     * @param Campus $campus
+     * @return DateTimeInterface|null
      */
-    public function setCampus(Campus $campus): void
+    public function getDateStarted(): ?DateTimeInterface
+    {
+        return $this->dateStarted;
+    }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getDateEnded(): ?DateTimeInterface
+    {
+        return $this->dateEnded;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsOrganizer(): ?bool
+    {
+        return $this->isOrganizer;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsRegistered(): ?bool
+    {
+        return $this->isRegistered;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsNotRegistered(): ?bool
+    {
+        return $this->isNotRegistered;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsOver(): ?bool
+    {
+        return $this->isOver;
+    }
+
+    /**
+     * @param Campus|null $campus
+     */
+    public function setCampus(?Campus $campus): void
     {
         $this->campus = $campus;
     }
 
     /**
-     * @param \DateTimeInterface $dateStarted
+     * @param string|null $search
      */
-    public function setDateStarted(\DateTimeInterface $dateStarted): void
+    public function setSearch(?string $search): void
+    {
+        $this->search = $search;
+    }
+
+    /**
+     * @param DateTimeInterface|null $dateStarted
+     */
+    public function setDateStarted(?DateTimeInterface $dateStarted): void
     {
         $this->dateStarted = $dateStarted;
     }
 
     /**
-     * @param \DateTimeInterface $dateEnded
+     * @param DateTimeInterface|null $dateEnded
      */
-    public function setDateEnded(\DateTimeInterface $dateEnded): void
+    public function setDateEnded(?DateTimeInterface $dateEnded): void
     {
         $this->dateEnded = $dateEnded;
     }
 
     /**
-     * @param mixed $isNotRegistered
+     * @param bool|null $isOrganizer
      */
-    public function setIsNotRegistered($isNotRegistered): void
-    {
-        $this->isNotRegistered = $isNotRegistered;
-    }
-
-    /**
-     * @param mixed $isOrganizer
-     */
-    public function setIsOrganizer($isOrganizer): void
+    public function setIsOrganizer(?bool $isOrganizer): void
     {
         $this->isOrganizer = $isOrganizer;
     }
 
     /**
-     * @param mixed $isOver
+     * @param bool|null $isRegistered
      */
-    public function setIsOver($isOver): void
-    {
-        $this->isOver = $isOver;
-    }
-
-    /**
-     * @param mixed $isRegistered
-     */
-    public function setIsRegistered($isRegistered): void
+    public function setIsRegistered(?bool $isRegistered): void
     {
         $this->isRegistered = $isRegistered;
     }
 
     /**
-     * @param mixed $search
+     * @param bool|null $isNotRegistered
      */
-    public function setSearch($search): void
+    public function setIsNotRegistered(?bool $isNotRegistered): void
     {
-        $this->search = $search;
+        $this->isNotRegistered = $isNotRegistered;
+    }
+
+    /**
+     * @param bool|null $isOver
+     */
+    public function setIsOver(?bool $isOver): void
+    {
+        $this->isOver = $isOver;
     }
 
 

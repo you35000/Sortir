@@ -21,11 +21,12 @@ class OutingController extends AbstractController
     public function index(Request $req, EntityManagerInterface $mgr): Response
     {
         $user = $mgr->getRepository(User::class)->find(1);
-        $outings = $mgr->getRepository(Outing::class)->findAll();
-        $search = new SearchOuting();
-        $form = $this->createForm(SearchFormType::class, $search);
+        $outings = $mgr->getRepository(Outing::class)->findAllNotHistorized();
+
+        $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($req);
         if ($form->isSubmitted()) {
+            $search = $form->getData();
             $outings = $mgr->getRepository(Outing::class)->filters($search, $user);
         }
         //TODO : à mettre en place une fois les log en place
