@@ -4,39 +4,22 @@
 
 {% block main %}
 <div class="col-6 offset-3">
-    <h2>{{ outing.name }}</h2>
-    <div class="row">
-        <div class="col">
-            <div class="row">
-                <label for="name" class="col-7 col-form-label">Nom de la sortie :</label>
-                <div class="col-5">
-                    <input id="name" type="text" readonly class="form-control-plaintext" value="{{ outing.name }}">
-                </div>
-                <label for="startDate" class="col-7 col-form-label">Date et heure de sortie :</label>
-                <div class="col-5">
-                    <input type="text" readonly class="form-control-plaintext" value="{{ outing.startDate | date('d M Y')}}">
-                </div>
-                <label for="name" class="col-7 col-form-label">Date limite d'inscription :</label>
-                <div class="col-5">
-                    <input type="text" readonly class="form-control-plaintext" value="{{ outing.limitDate | date('d M Y')}}">
-                </div>
-                <label for="name" class="col-7 col-form-label">Nombre de place :</label>
-                <div class="col-5">
-                    <input type="text" readonly class="form-control-plaintext" value="{{ outing.nbInscription }} placess">
-                </div>
-                <label for="name" class="col-7 col-form-label">Durée :</label>
-                <div class="col-5">
-                    <input type="text" readonly class="form-control-plaintext" value="{{ outing.duration }} min">
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="row">
-                <label for="campus" class="col-6 col-form-label">Campus</label>
-                <div class="col-6">
-                    <input type="text" readonly class="form-control-plaintext" value="{{ outing.campus.name }}">
-                </div>
-            </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ outing.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ outing.organizer.pseudo }}</h6>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    Campus : {{ outing.campus.name }}
+                </li>
+                <li class="list-group-item">
+                    Date et heure : {{ outing.startDate |date('d M y h:i') }}
+                </li>
+                <li class="list-group-item">
+                    Date limite d'inscription : {{ outing.limitDate | date('d M Y') }}
+                </li>
+            </ul>
+            <p class="card-text">{{ outing.outingInfo}}</p>
         </div>
     </div>
 </div>
