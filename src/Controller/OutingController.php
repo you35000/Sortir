@@ -32,7 +32,7 @@ class OutingController extends AbstractController
 
         $form = $this->createForm(SearchFormType::class);
         $form->handleRequest($req);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $search = $form->getData();
             $outings = $mgr->getRepository(Outing::class)->filters($search, $this->getUser());
         }

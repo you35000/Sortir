@@ -6,16 +6,25 @@ use App\Entity\Campus;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchOuting
 {
     private ?Campus $campus = null;
     private ?string $search = null;
 
-
+    /**
+     * @Assert\Expression(
+     *     "this.getDateStarted() < this.getDateEnded()",
+     *     message="Cette date doit être antérieur")
+     */
     private ?DateTimeInterface $dateStarted = null;
 
-
+    /**
+     * @Assert\Expression(
+     *     "this.getDateStarted() < this.getDateEnded()",
+     *     message="Cette date doit être postérieur")
+     */
     private ?DateTimeInterface $dateEnded = null;
     private ?bool $isOrganizer = null;
     private ?bool $isRegistered = null;
