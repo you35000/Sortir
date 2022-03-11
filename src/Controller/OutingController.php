@@ -10,6 +10,7 @@ use App\Form\Model\SearchOuting;
 use App\Form\OutingFormType;
 use App\Form\SearchFormType;
 use App\Repository\OutingRepository;
+use App\Service\UpdateState;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +25,10 @@ class OutingController extends AbstractController
     /**
      * @Route("/outing", name="app_outing")
      */
-    public function index(Request $req, EntityManagerInterface $mgr): Response
+    public function index(Request $req, EntityManagerInterface $mgr, UpdateState $updateState): Response
     {
-
+        dump(UpdateState::getLastUpdate());
+        $updateState->testLastUpdate();
         $outings = $mgr->getRepository(Outing::class)->findAllNotHistorized($this->getUser());
         $campus = $mgr->getRepository(Campus::class)->findAll();
 
