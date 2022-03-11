@@ -163,6 +163,7 @@ class OutingController extends AbstractController
 
             $em->persist($newOuting);
             $em->flush();
+            return $this->redirectToRoute('app_outing');
         }
 
         return $this->render('outing/new.html.twig', [

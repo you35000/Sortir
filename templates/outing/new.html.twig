@@ -20,7 +20,9 @@
                 {{ form_row(form.Place) }}
 
             </div>
-            <div class="text-center">
+            <div class="text-center d-flex justify-content-center">
+                {{ form_row(form.create,{ 'attr': {'class': 'btn btn-primary'} }) }}
+                {{ form_row(form.published,{ 'attr': {'class': 'btn btn-success mx-5'} }) }}
                 <a href="{{ path('app_outing') }}" class="btn btn-secondary">Annuler</a>
             </div>
         </div>
