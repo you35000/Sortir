@@ -72,15 +72,16 @@ class OutingController extends AbstractController
     /**
      * @Route ("/withdraw-outing/{id}", name="outing_withdraw")
      */
-    public function withdrawOuting(int $id, OutingRepository $outingRepository, EntityManagerInterface $entityManager): Response
+    public function withdraw(Outing $outing, EntityManagerInterface $em): Response
     {
-        $outing = $outingRepository->find($id);
-        dd($outing);
-        $currentUser = $this->getUser();
-        $currentUser->withdrawOuting($outing);
-        $entityManager->flush();
-
-        return $this->render('outing/index.html.twig', ['outing' => $outing,]);
+        if (($outing->getAttendees()->contains(($this->getUser())) || ($outing->getAttendees()->count() == $outing->getNbInscription()))) {
+            return $this->redirectToRoute('app_outing');
+        } else {
+            $outing->removeAttendee($this->getUser());
+            $em->persist($outing);
+            $em->flush();
+            return $this->redirectToRoute('app_outing');
+        }
     }
 
     /**
