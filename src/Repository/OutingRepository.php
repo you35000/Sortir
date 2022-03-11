@@ -107,6 +107,8 @@ class OutingRepository extends ServiceEntityRepository
             $qb->andWhere('o.startDate > CURRENT_DATE()');
         }
 
+        //TODO: voir requête pour supprimer les sorties créées par d'autres utilisateurs
+
         $qb->orderBy('o.startDate', 'ASC');
 
 

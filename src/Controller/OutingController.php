@@ -7,6 +7,7 @@ use App\Entity\Outing;
 use App\Entity\User;
 use App\Entity\State;
 use App\Form\Model\SearchOuting;
+use App\Form\OutingFormType;
 use App\Form\SearchFormType;
 use App\Repository\OutingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -103,7 +104,7 @@ class OutingController extends AbstractController
     public function cancel(Outing $outing, EntityManagerInterface $em): Response
     {
         if ($outing->getOrganizer() == $this->getUser() && $outing->getStartDate() > new \DateTime('now')) {
-            $outing->setState($em->getRepository(State::class)->findOneBy(['libelle'=>'Annulée']));
+            $outing->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Annulée']));
             $em->persist($outing);
             $em->flush();
             return $this->redirectToRoute('app_outing');
@@ -135,8 +136,36 @@ class OutingController extends AbstractController
      */
     public function update(Outing $outing, EntityManagerInterface $em): Response
     {
-        return $this->render('outing/update.html.twig',[
-            'outing'=>$outing,
+        return $this->render('outing/update.html.twig', [
+            'outing' => $outing,
+        ]);
+    }
+
+    /**
+     * @Route ("/new-outing/", name="outing_new")
+     */
+    public function new(Request $req, EntityManagerInterface $em): Response
+    {
+        $outing = new Outing();
+//        dd($em->getRepository(Campus::class)->find(34));
+        $form = $this->createForm(OutingFormType::class);
+        $form->handleRequest($req);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newOuting = $form->getData();
+            $newOuting->setOrganizer($this->getUser());
+            $newOuting->setCampus($this->getUser()->getCampus());
+            if ($form->getClickedButton()->getConfig()->getName() == 'create') {
+                $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Créée']));
+            } else {
+                $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
+            };
+
+            $em->persist($newOuting);
+            $em->flush();
+        }
+
+        return $this->render('outing/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 

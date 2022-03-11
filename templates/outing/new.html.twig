@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle sortie{% endblock %}
+
+{% block main %}
+    <div class="col-6 offset-3">
+        <h2>Créer votre sortie</h2>
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-6">
+                {{ form_row(form.name) }}
+                {{ form_row(form.startDate) }}
+                {{ form_row(form.limitDate) }}
+                {{ form_row(form.nbInscription) }}
+                {{ form_row(form.duration) }}
+                {{ form_row(form.outingInfo) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(form.campus) }}
+                {{ form_row(form.Place) }}
+
+            </div>
+            <div class="text-center">
+                <a href="{{ path('app_outing') }}" class="btn btn-secondary">Annuler</a>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
