@@ -103,6 +103,8 @@ class OutingRepository extends ServiceEntityRepository
 
         if ($search->getIsOver()) {
             $qb->andWhere('o.startDate < CURRENT_DATE()');
+        }else{
+            $qb->andWhere('o.startDate > CURRENT_DATE()');
         }
 
         $qb->orderBy('o.startDate', 'ASC');

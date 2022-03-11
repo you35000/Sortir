@@ -32,8 +32,6 @@ class SearchFormType extends AbstractType
                 'widget' => 'single_text',
 //                'format' => 'dd-MM-yyyy',
                 'label' => 'Entre',
-                'data' => new \DateTime(),
-
             ])
             ->add('dateEnded', DateType::class, [
                 'required' => false,

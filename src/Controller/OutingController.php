@@ -69,7 +69,7 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route ("/withdraw-outing/{id}", name="withdraw")
+     * @Route ("/withdraw-outing/{id}", name="outing_withdraw")
      */
     public function withdrawOuting(int $id, OutingRepository $outingRepository, EntityManagerInterface $entityManager): Response
     {
@@ -83,7 +83,7 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route ("/register-outing/{id}", name="register")
+     * @Route ("/register-outing/{id}", name="outing_register")
      */
     public function register(Outing $outing, EntityManagerInterface $em): Response
     {
@@ -95,6 +95,49 @@ class OutingController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('app_outing');
         }
+    }
+
+    /**
+     * @Route ("/cancel-outing/{id}", name="outing_cancel")
+     */
+    public function cancel(Outing $outing, EntityManagerInterface $em): Response
+    {
+        if ($outing->getOrganizer() == $this->getUser() && $outing->getStartDate() > new \DateTime('now')) {
+            $outing->setState($em->getRepository(State::class)->findOneBy(['libelle'=>'Annulée']));
+            $em->persist($outing);
+            $em->flush();
+            return $this->redirectToRoute('app_outing');
+        } else {
+            $message = 'Impossible d\'annuler la sortie';
+            //TODO : envoyer le message
+            return $this->redirectToRoute('app_outing');
+        }
+    }
+
+    /**
+     * @Route ("/delete-outing/{id}", name="outing_delete")
+     */
+    public function remove(Outing $outing, EntityManagerInterface $em): Response
+    {
+        if (($outing->getOrganizer() == $this->getUser()) && ($outing->getState()->getLibelle() == 'Créée')) {
+            $em->remove($outing);
+            $em->flush();
+            return $this->redirectToRoute('app_outing');
+        } else {
+            $message = 'Impossible de supprimer la sortie';
+            //TODO : envoyer le message
+            return $this->redirectToRoute('app_outing');
+        }
+    }
+
+    /**
+     * @Route ("/update-outing/{id}", name="outing_update")
+     */
+    public function update(Outing $outing, EntityManagerInterface $em): Response
+    {
+        return $this->render('outing/update.html.twig',[
+            'outing'=>$outing,
+        ]);
     }
 
 }
