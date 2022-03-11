@@ -74,12 +74,16 @@ class OutingController extends AbstractController
      */
     public function withdraw(Outing $outing, EntityManagerInterface $em): Response
     {
-        if (($outing->getAttendees()->contains(($this->getUser())) || ($outing->getAttendees()->count() == $outing->getNbInscription()))) {
-            return $this->redirectToRoute('app_outing');
-        } else {
+        if (($outing->getAttendees()->contains(($this->getUser())))) {
             $outing->removeAttendee($this->getUser());
+            if (($outing->getAttendees()->count() < $outing->getNbInscription())){
+                $outing->setState($em->getRepository(State::class)->findOneBy(['libelle'=>'Ouverte']));
+            }
             $em->persist($outing);
             $em->flush();
+            return $this->redirectToRoute('app_outing');
+        } else {
+
             return $this->redirectToRoute('app_outing');
         }
     }
@@ -88,11 +92,15 @@ class OutingController extends AbstractController
      * @Route ("/register-outing/{id}", name="outing_register")
      */
     public function register(Outing $outing, EntityManagerInterface $em): Response
-    {
+    {   //l'utilisateur est-il contenu dans les participants de la sortie (booleen ?)
         if (($outing->getAttendees()->contains($this->getUser())) || ($outing->getAttendees()->count() == $outing->getNbInscription())) {
             return $this->redirectToRoute('app_outing');
         } else {
             $outing->addAttendee($this->getUser());
+            //on prend le nombre de participants , on affiche cloturé quand le dernier participant est inscrit
+            if($outing->getAttendees()->count() == $outing->getNbInscription()){
+                $outing->setState($em->getRepository(State::class)->findOneBy(['libelle'=>'Clôturée']));
+            };
             $em->persist($outing);
             $em->flush();
             return $this->redirectToRoute('app_outing');
