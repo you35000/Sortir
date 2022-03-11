@@ -11,7 +11,11 @@ class SearchOuting
 {
     private ?Campus $campus = null;
     private ?string $search = null;
+
+
     private ?DateTimeInterface $dateStarted = null;
+
+
     private ?DateTimeInterface $dateEnded = null;
     private ?bool $isOrganizer = null;
     private ?bool $isRegistered = null;

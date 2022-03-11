@@ -150,33 +150,33 @@ class OutingController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route ("/new-outing/", name="outing_new")
-     */
-    public function new(Request $req, EntityManagerInterface $em): Response
-    {
-        $outing = new Outing();
-//        dd($em->getRepository(Campus::class)->find(34));
-        $form = $this->createForm(OutingFormType::class);
-        $form->handleRequest($req);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $newOuting = $form->getData();
-            $newOuting->setOrganizer($this->getUser());
-            $newOuting->setCampus($this->getUser()->getCampus());
-            if ($form->getClickedButton()->getConfig()->getName() == 'create') {
-                $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Créée']));
-            } else {
-                $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
-            };
-
-            $em->persist($newOuting);
-            $em->flush();
-            return $this->redirectToRoute('app_outing');
-        }
-
-        return $this->render('outing/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
+//    /**
+//     * @Route ("/new-outing/", name="outing_new")
+//     */
+//    public function new(Request $req, EntityManagerInterface $em): Response
+//    {
+//        $outing = new Outing();
+//        dd($em->getRepository(Campus::class)->find(34)->getName());
+//        $form = $this->createForm(OutingFormType::class);
+//        $form->handleRequest($req);
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $newOuting = $form->getData();
+//            $newOuting->setOrganizer($this->getUser());
+//            $newOuting->setCampus($this->getUser()->getCampus());
+//            if ($form->getClickedButton()->getConfig()->getName() == 'create') {
+//                $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Créée']));
+//            } else {
+//                $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
+//            };
+//
+//            $em->persist($newOuting);
+//            $em->flush();
+//            return $this->redirectToRoute('app_outing');
+//        }
+//
+//        return $this->render('outing/new.html.twig', [
+//            'form' => $form->createView(),
+//        ]);
+//    }
 
 }
