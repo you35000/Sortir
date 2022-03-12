@@ -10,7 +10,7 @@
         {% endblock %}
     </title>
     <!-- Favicon-->
-    <!-- <link rel="icon" type="image/x-icon" href="assets/favicon.ico" /> -->
+    <!-- <link rel="icon" type="uploads/x-icon" href="assets/favicon.ico" /> -->
     <!-- Core theme CSS (includes Bootstrap)-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
           integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
@@ -58,14 +58,14 @@
                         <a href="{{ path('monProfil') }}" class="nav-link {% if r == 'monProfil' %}active{% endif %}">Mon
                             profil</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item ms-5">
                         <a href="{{ path('app_logout') }}"
-                           class="btn btn-danger">Log out</a>
+                           class="btn btn-outline-danger">Log out</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
                         <a href="{{ path('app_login') }}"
-                           class="btn btn-primary {% if r == 'app_login' %}active{% endif %}">Log in</a>
+                           class="btn btn-primary{% if r == 'app_login' %}active{% endif %}">Log in</a>
                     </li>
                 {% endif %}
 

@@ -97,7 +97,9 @@
                         <tbody>
                         {% for p in outing.attendees %}
                             <tr>
-                                <td>{{ p.pseudo }}</td>
+                                <td>
+                                    <a href="{{ path('afficherProfil',{'outing':outing.id,'user':p.id}) }}">{{ p.pseudo }}</a>
+                                </td>
                                 <td>{{ p.firstName }} {{ p.lastName }}</td>
                             </tr>
                         {% endfor %}

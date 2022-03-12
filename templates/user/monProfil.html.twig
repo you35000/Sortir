@@ -1,48 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Ajouter modifier Profil {% endblock %}
+{% block title %} Modification de mon profil {% endblock %}
 
 
 {% block main %}
 
-    <div class="row justify-content-center align-items-center">
-        <h2 class="text_center"> Mon Profil</h2>
-    </div>
-
-    <div class="container">
-    <div class="col-4 ">
-        <img class="profil" src="{{ asset('image/profil.png') }}" width="200" alt="profil">
-        {#            <img src="{{ asset('uploads/user_image/' ~  user.picture) }}"> #}
-    </div>
-
-    <div class="row justify-content-center align-items-center">
-
-        <div class="col-4 my-4">
-
-            {{ form_start (formulaire) }}
-
-            {{ form_widget (formulaire) }}
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-4 offset-2 ">
-                        <div>
-                        <button class="btn btn-primary" type="submit">Ajouter</button>
-                        </div>
-                            <div>
-
-                            <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary"
-                               style="width: 130px">Retour</a>
+    <div class="row">
+        <div class=" col-10 offset-1">
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-3 p-3">
+                        {% if user.picture %}
+                            <img src="{{ asset('uploads/user_img/' ~  user.picture) }}" class="img-fluid rounded-start"
+                                 alt="Photo profil de {{ user.pseudo }}">
+                        {% else %}
+                            <img src="{{ asset('img/default-profile.png') }}" class="img-fluid rounded-start"
+                                 alt="Photo profil de {{ user.pseudo }}">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title ps-3">{{ user.pseudo }}</h5>
+                            {{ form_start(form) }}
+                            <div class="row">
+                                <div class="col-6">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">{{ form_row(form.pseudo) }}</li>
+                                        <li class="list-group-item">{{ form_row(form.firstName) }}</li>
+                                        <li class="list-group-item">{{ form_row(form.lastName) }}</li>
+                                        <li class="list-group-item">{{ form_row(form.campus) }}</li>
+                                        <li class="list-group-item">{{ form_row(form.picture) }}</li>
+                                    </ul>
+                                </div>
+                                <div class="col-6">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">{{ form_row(form.phone) }}</li>
+                                        <li class="list-group-item">{{ form_row(form.email) }}</li>
+                                        <li class="list-group-item">{{ form_row(form.password) }}</li>
+                                    </ul>
+                                    <div class="mt-3 text-center">
+                                        <button type="submit" class="btn btn-success btn-lg me-5">Enregistrer</button>
+                                        <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary btn-lg">Retour</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
                         </div>
                     </div>
-
                 </div>
             </div>
+            <div class="text-center">
 
-
-            {{ form_end (formulaire) }}
+            </div>
         </div>
-
     </div>
 
 

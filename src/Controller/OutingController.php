@@ -27,8 +27,7 @@ class OutingController extends AbstractController
      */
     public function index(Request $req, EntityManagerInterface $mgr, UpdateState $updateState): Response
     {
-        dump(UpdateState::getLastUpdate());
-        $updateState->testLastUpdate();
+        $updateState->updateOutings();
         $outings = $mgr->getRepository(Outing::class)->findAllNotHistorized($this->getUser());
         $campus = $mgr->getRepository(Campus::class)->findAll();
 
@@ -78,8 +77,8 @@ class OutingController extends AbstractController
     {
         if (($outing->getAttendees()->contains(($this->getUser())))) {
             $outing->removeAttendee($this->getUser());
-            if (($outing->getAttendees()->count() < $outing->getNbInscription())){
-                $outing->setState($em->getRepository(State::class)->findOneBy(['libelle'=>'Ouverte']));
+            if (($outing->getAttendees()->count() < $outing->getNbInscription())) {
+                $outing->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
             }
             $em->persist($outing);
             $em->flush();
@@ -100,8 +99,8 @@ class OutingController extends AbstractController
         } else {
             $outing->addAttendee($this->getUser());
             //on prend le nombre de participants , on affiche cloturé quand le dernier participant est inscrit
-            if($outing->getAttendees()->count() == $outing->getNbInscription()){
-                $outing->setState($em->getRepository(State::class)->findOneBy(['libelle'=>'Clôturée']));
+            if ($outing->getAttendees()->count() == $outing->getNbInscription()) {
+                $outing->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Clôturée']));
             };
             $em->persist($outing);
             $em->flush();

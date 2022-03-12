@@ -2,91 +2,79 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
 use App\Entity\User;
-use Faker\Provider\Image;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class UserFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('pseudo',TextType::class,[
-                'label'=>'Pseudo :',
-                'trim'=> true,
+            ->add('pseudo', TextType::class, [
+                'label' => 'Pseudo',
+                'trim' => true,
                 'required' => true,
-                ])
-
-
-            ->add('firstName',TextType::class,[
-                'label'=>'Prénom :',
-                'trim'=> true,
+            ])
+            ->add('firstName', TextType::class, [
+                'label' => 'Prénom',
+                'trim' => true,
                 'required' => true,
-                ])
-
-
-            ->add('lastName',TextType::class,[
-                'label'=>'Nom :',
-                'trim'=> true,
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Nom',
+                'trim' => true,
                 'required' => true,
-                ])
-
-            ->add('phone',TelType::class,[
-                'label'=>'Téléphone :',
-                'trim'=> true,
+            ])
+            ->add('phone', TelType::class, [
+                'label' => 'Téléphone',
+                'trim' => true,
                 'required' => true,
-                ])
-
-            ->add('email',EmailType::class,[
-                'label'=>'Email :',
-                'trim'=> true,
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
+                'trim' => true,
                 'required' => true,
-                ])
-
-            ->add('password',RepeatedType::class, [
+            ])
+            ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
-                'required' => true,
-                'first_options' => ['label' => 'Mot de passe : '],
-                'second_options' => ['label' => 'Confirmation : '],
-                ])
-
-            ->add('campus',null,['choice_label'=>'name'])
-
-            ->add('picture', FileType::class, [
-                'label' => 'Ma photo :',
                 'required' => false,
-                'mapped' => false,
+                'first_options' => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmation'],
+            ])
+            ->add('campus', EntityType::class, [
+                'class' => Campus::class,
+                'label' => 'Campus',
+                'choice_label' => 'name'
+            ])
+            ->add('picture', FileType::class, [
+                'label' => 'Ma photo',
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/png',
+                            'application/jpg',
+                            'application/jpeg',
+                        ],
+                        'mimeTypesMessage' => 'Vérifier l\'extention de votre photo',
+                    ])
+                ],
+                'help' => 'Fichiers .png, .jpg, .jpeg acceptés. 1024k max',
+                'data_class' => null
             ]);
-
-//        $builder->add('submit', SubmitType::class, [
-//            'label' => 'Enregistrer',
-//            'attr' => array(
-//                'class' => 'btn btn-outline-secondary',)
-//        ]);
-//        $builder->add('button', ButtonType::class, [
-//            'label' => 'Annuler',
-//            'attr' => array(
-//            'class' => 'btn btn-outline-secondary',)
-//
-//        ]);
-
-
-
-
-
-
-
     }
 
     public function configureOptions(OptionsResolver $resolver): void

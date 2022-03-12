@@ -1,52 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Afficher profil{% endblock %}
+{% block title %}Profil de : {{ user.pseudo }}{% endblock %}
 
 {% block main %}
-    <div class="container">
-        <div class="row justify-content-center align-items-center">
-{#            <div class="col-4 ">#}
-{#                <img src="{{ asset('uploads/user_image/' ~  user.imageFilename) }}">#}
-{#            </div>#}
 
-            <div class=" col order-1">
-                <h2 class="text-center my-3"> {{ user.pseudo }}</h2>
-
-                <table class="table table-light table-hover">
-
-                    <tr class="table-light">
-                        <th scope="row">Prénom :</th>
-                        <td>{{ user.firstName }}</td>
-                    </tr>
-                    <tr class="table-light">
-                        <th scope="row">nom :</th>
-                        <td>{{ user.lastName }}</td>
-                    </tr>
-                    <tr class="table-light">
-                        <th scope="row">Téléphone :</th>
-                        <td>{{ user.phone }}</td>
-                    </tr>
-                    <tr class="table-light">
-                        <th scope="row">Email :</th>
-                        <td>{{ user.email }}</td>
-                    </tr>
-                    <tr class="table-light">
-                        <th scope="row">Campus :</th>
-                        <td>{{ user.campus.name }}</td>
-                    </tr>
-
-
-                </table>
-                <div class="container">
-                    <div class="row ">
-                        <div class="gap-2 d-md-flex justify-content-md-start flex flex-nowrap ">
-                            <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary"
-                               style="width: 130px">Retour</a>
-
-
+    <div class="row">
+        <div class=" col-4 offset-4">
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-5 p-3">
+                        {% if user.picture %}
+                            <img src="{{ asset('uploads/user_img/' ~  user.picture) }}" class="img-fluid rounded-start"
+                                 alt="Photo profil de {{ user.pseudo }}">
+                        {% else %}
+                            <img src="{{ asset('img/default-profile.png') }}" class="img-fluid rounded-start"
+                                 alt="Photo profil de {{ user.pseudo }}">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <h5 class="card-title ps-3">{{ user.pseudo }}</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Prénom : {{ user.firstName }}</li>
+                                <li class="list-group-item">Nom : {{ user.lastName }}</li>
+                                <li class="list-group-item">Téléphone : {{ user.phone }}</li>
+                                <li class="list-group-item">Email : {{ user.email }}</li>
+                                <li class="list-group-item">Campus : {{ user.campus.name }}</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="text-center">
+                <a href="{{ path('outing_details',{'id':outing.id}) }}" class="btn btn-outline-secondary">Retour</a>
             </div>
         </div>
     </div>
