@@ -44,7 +44,6 @@ class OutingController extends AbstractController
             'outings' => $outings,
             'campus' => $campus,
             'form' => $form->createView(),
-
         ]);
     }
 
@@ -63,10 +62,11 @@ class OutingController extends AbstractController
      */
     public function published(Outing $outing, EntityManagerInterface $mgr)
     {
-        $outing->setState($mgr->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
-
-        $mgr->persist($outing);
-        $mgr->flush();
+        if ($outing->getState()->getLibelle() == 'Créée' && $outing->getOrganizer() === $this->getUser()) {
+            $outing->setState($mgr->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
+            $mgr->persist($outing);
+            $mgr->flush();
+        }
 
         return $this->redirectToRoute('app_outing');
     }
@@ -131,15 +131,14 @@ class OutingController extends AbstractController
      */
     public function remove(Outing $outing, EntityManagerInterface $em): Response
     {
-        if (($outing->getOrganizer() == $this->getUser()) && ($outing->getState()->getLibelle() == 'Créée')) {
+        if (($outing->getOrganizer() === $this->getUser()) && ($outing->getState()->getLibelle() == 'Créée')) {
             $em->remove($outing);
             $em->flush();
-            return $this->redirectToRoute('app_outing');
         } else {
             $message = 'Impossible de supprimer la sortie';
             //TODO : envoyer le message
-            return $this->redirectToRoute('app_outing');
         }
+        return $this->redirectToRoute('app_outing');
     }
 
     /**

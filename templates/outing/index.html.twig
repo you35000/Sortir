@@ -57,8 +57,17 @@
 
                         <tr>
                             <td><a href="{{ path('outing_details',{'id':o.id}) }}">{{ o.name }}</a></td>
-                            <td>{{ o.startDate | date('d/m/Y H:i') }}</td>
-                            <td>{{ o.limitDate | date('d/m/Y') }}</td>
+                            <td>
+                                <div class="row g-0">
+                                    <div class="col-6">
+                                        {{ o.startDate | localizeddate('none', 'none', 'fr', null, 'd MMM yy') }}
+                                    </div>
+                                    <div class="col-6">
+                                        {{ o.startDate | localizeddate('none', 'none', 'fr', null, 'à HH:m') }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ o.limitDate | localizeddate('none', 'none', 'fr', null, 'd MMM Y') }}</td>
                             <td>{{ o.attendees|length }} / {{ o.nbInscription }}</td>
                             <td><span class="badge
                                 {% if o.state.libelle == 'Annulée' %}
