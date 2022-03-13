@@ -50,7 +50,7 @@ class OutingRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-
+ 
     public function findAllNotHistorized($user)
     {
         return $this->createQueryBuilder('o')

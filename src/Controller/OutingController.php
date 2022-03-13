@@ -38,6 +38,7 @@ class OutingController extends AbstractController
             $outings = $mgr->getRepository(Outing::class)->filters($search, $this->getUser());
         }
 
+
         return $this->render('outing/index.html.twig', [
             'controller_name' => 'OutingController',
             'outings' => $outings,
