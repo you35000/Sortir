@@ -25,6 +25,7 @@ class UserFormType extends AbstractType
                 'label' => 'Pseudo',
                 'trim' => true,
                 'required' => true,
+                'invalid_message' => 'Ce pseudo est déjà utilisé'
             ])
             ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
@@ -49,7 +50,7 @@ class UserFormType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
-                'required' => false,
+                'required' => true,
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmation'],
             ])

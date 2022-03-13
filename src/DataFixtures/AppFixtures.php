@@ -24,6 +24,13 @@ class AppFixtures extends Fixture
 
     private ObjectManager $manager;
 
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+
+    {
+        $this->faker = Factory::create('fr_FR');
+        $this->hasher = $passwordHasher;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
@@ -48,8 +55,8 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 10; $i++) {
 
             $city = new City();
-            $city->setName($faker->city)
-                ->setPostCode($faker->postcode);
+            $city->setName($this->faker->city)
+                ->setPostCode($this->faker->postcode);
 
             $this->manager->persist($city);
         }
@@ -60,17 +67,15 @@ class AppFixtures extends Fixture
     public function addPlace()
     {
 
-        /**
-         * @var Place $faker
-         */
         $faker = Factory::create('fr_FR');
 
         $cities = $this->manager->getRepository(City::class)->findAll();
+        $places = ['Cinéma', 'Patinoire', 'Bowling', 'LaserGame', 'Bar', 'Tricot', 'EscapeGame', 'Scrabble', 'Luge', 'Poney', 'Piscine', 'Jeux vidéos', 'Football'];
 
 
         for ($i = 0; $i < 10; $i++) {
             $place = new Place();
-            $place->setName($faker->company)
+            $place->setName($faker->randomElement($places))
                 ->setStreet($faker->streetAddress)
                 ->setCity($faker->randomElement($cities));
 
@@ -132,13 +137,6 @@ class AppFixtures extends Fixture
     }
 
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
-
-    {
-        $this->faker = Factory::create('fr_FR');
-        $this->hasher = $passwordHasher;
-    }
-
     public function addUser()
     {
         $campus = $this->manager->getRepository(Campus::class)->findAll();
@@ -155,7 +153,7 @@ class AppFixtures extends Fixture
 
         $this->manager->persist($user);
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $fname = $this->faker->firstName;
             $lname = $this->faker->lastName;
             $pseudo = $fname . ' ' . substr($lname, 0, 1) . '.';
@@ -181,12 +179,15 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
         $states = $this->manager->getRepository(State::class)->findAll();
+        $users = $this->manager->getRepository(User::class)->findAll();
+        $places = $this->manager->getRepository(Place::class)->findAll();
+
 
         for ($i = 0; $i < 50; $i++) {
-            $startDate = new DateTime();
+            $place = $this->faker->randomElement($places);
             $startDate = $faker->dateTimeThisYear();
             $outing = new Outing();
-            $outing->setName('Outing' . ($i + 1))
+            $outing->setName($place->getName())
                 ->setStartDate(date_add($startDate, date_interval_create_from_date_string('9 months')))
                 ->setDuration(($faker->numberBetween(6, 30)) * 10);
 
@@ -195,32 +196,45 @@ class AppFixtures extends Fixture
             $outing->setLimitDate($date)
                 ->setNbInscription($faker->numberBetween(2, 20))
                 ->setOrganizer($faker->randomElement($this->manager->getRepository(User::class)->findAll()))
-                ->setPlace($faker->randomElement($this->manager->getRepository(Place::class)->findAll()));
+                ->setPlace($place);
             $outing->setCampus($outing->getOrganizer()->getCampus());
 
-            //Gestion de l'état selon la date :
+            //Ajout de participant
+            $nbMax = $this->faker->numberBetween(0, $outing->getNbInscription());
 
-            //Activité en cours
-            if ($outing->getStartDate() < new DateTime("now") && new DateTime('now') < date_add($outing->getStartDate(), date_interval_create_from_date_string($outing->getDuration() . ' minutes'))) {
+            for ($j = 0; $j < $nbMax; $j++) {
+                $newAttendee = $this->faker->randomElement($users);
+                if (!$outing->getAttendees()->contains($newAttendee)) {
+                    $outing->addAttendee($newAttendee);
+                }
+            }
+
+            //Gestion de l'état selon la date :
+            $now = new DateTime('now');
+            $dateEnd = date_add($outing->getStartDate(), date_interval_create_from_date_string($outing->getDuration() . ' minutes'));
+
+            if ($outing->getAttendees()->count() == 0 && $outing->getStartDate() > $now) {
+                $outing->setState($states[0]);
+            } //Activité en cours
+            elseif ($outing->getStartDate() < $now && $now < $dateEnd) {
                 $outing->setState($states[3]);
             } //Activité passée
-            elseif (date_add($outing->getStartDate(), date_interval_create_from_date_string($outing->getDuration() . ' minutes')) < new DateTime('now')) {
+            elseif ($dateEnd < $now) {
                 $outing->setState($states[4]);
             } //Activité historisée
-            elseif (date_add($outing->getStartDate(), date_interval_create_from_date_string('1 month')) < new DateTime('now')) {
+            elseif (date_add($outing->getStartDate(), date_interval_create_from_date_string('1 month')) < $now) {
                 $outing->setState($states[6]);
             } //Activité Cloturée
-            elseif (new DateTime() < $outing->getStartDate() && new DateTime() > $outing->getLimitDate()) {
+            elseif ($outing->getLimitDate() < $now || $outing->getNbInscription() == $outing->getAttendees()->count()) {
                 $outing->setState($states[2]);
             } //Autre random
             else {
-                $othersStates[] = $states[0];
                 $othersStates[] = $states[1];
                 $othersStates[] = $states[5];
                 $outing->setState($faker->randomElement($othersStates));
             }
 
-            //TODO: Ajouter des participants;
+
             $this->manager->persist($outing);
         }
 

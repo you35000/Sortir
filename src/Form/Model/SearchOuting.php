@@ -15,14 +15,14 @@ class SearchOuting
 
     /**
      * @Assert\Expression(
-     *     "this.getDateStarted() < this.getDateEnded()",
+     *     "this.getDateStarted() <= this.getDateEnded()",
      *     message="Cette date doit être antérieur")
      */
     private ?DateTimeInterface $dateStarted = null;
 
     /**
      * @Assert\Expression(
-     *     "this.getDateStarted() < this.getDateEnded()",
+     *     "this.getDateStarted() <= this.getDateEnded()",
      *     message="Cette date doit être postérieur")
      */
     private ?DateTimeInterface $dateEnded = null;

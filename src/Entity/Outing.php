@@ -30,7 +30,6 @@ class Outing
     private $startDate;
 
 
-
     /**
      * @ORM\Column(type="datetime")
      */
@@ -115,7 +114,6 @@ class Outing
     }
 
 
-
     public function getLimitDate(): ?\DateTimeInterface
     {
         return $this->limitDate;
@@ -158,6 +156,14 @@ class Outing
     public function getAttendees(): Collection
     {
         return $this->attendees;
+    }
+
+    /**
+     * @param ArrayCollection $attendees
+     */
+    public function setAttendees(ArrayCollection $attendees): void
+    {
+        $this->attendees = $attendees;
     }
 
     public function addAttendee(User $attendee): self

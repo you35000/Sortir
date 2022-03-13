@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\State;
 use App\Form\Model\SearchOuting;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 
@@ -21,7 +22,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class OutingRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $em)
     {
         parent::__construct($registry, Outing::class);
     }
@@ -103,7 +104,7 @@ class OutingRepository extends ServiceEntityRepository
 
         if ($search->getIsOver()) {
             $qb->andWhere('o.startDate < CURRENT_DATE()');
-        }else{
+        } else {
             $qb->andWhere('o.startDate > CURRENT_DATE()');
         }
 
@@ -114,5 +115,13 @@ class OutingRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
         return $query->execute();
+    }
+
+    public function findAllExceptHistorized()
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.state <> :state')
+            ->setParameter('state', $this->_em->getRepository(State::class)->findOneBy(['libelle' => 'Historisée']))
+            ->getQuery()->execute();
     }
 }

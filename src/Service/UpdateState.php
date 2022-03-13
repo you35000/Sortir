@@ -25,28 +25,37 @@ class UpdateState
         $this->em = $em;
     }
 
-    public function testLastUpdate()
-    {
-        if (static::$lastUpdate !== null && self::$lastUpdate < date_sub(new \DateTime(), date_interval_create_from_date_string('10 seconds'))) {
-            $this->updateOutings();
-
-        } elseif (static::$lastUpdate === null) {
-            static::setLastUpdate(new \DateTime('now'));
-            $this->updateOutings();
-        }
-    }
+//    public function testLastUpdate()
+//    {
+//        if (static::$lastUpdate !== null && self::$lastUpdate < date_sub(new \DateTime(), date_interval_create_from_date_string('10 seconds'))) {
+//            $this->updateOutings();
+//
+//        } elseif (static::$lastUpdate === null) {
+//            static::setLastUpdate(new \DateTime('now'));
+//            $this->updateOutings();
+//        }
+//    }
 
     public function updateOutings()
     {
-        $outings = $this->outingRepository->findAll();
+        $outings = $this->outingRepository->findAllExceptHistorized();
         $states = $this->stateRepository->findAll();
         foreach ($outings as $o) {
-            $limitDateHistorize = date_sub(new \DateTime('now'), date_interval_create_from_date_string('1 month'));
-            if ($o->getState()->getLibelle() != 'Historisée' && $o->getStartDate() < $limitDateHistorize) {
+            $now = new \DateTime('now');
+            $limitDateHistorize = date_sub($now, date_interval_create_from_date_string('1 month'));
+            if ($o->getStartDate() < $limitDateHistorize) { //On marque l'activité en Historisée
                 $o->setState($states[6]);
                 $this->em->persist($o);
-            } elseif ($o->getState()->getLibelle() != 'Créée' && $o->getStartDate() > $limitDateHistorize && $o->getStartDate() < new \DateTime()) {
+            } elseif ($o->getState()->getLibelle() != 'Passée'
+                && $o->getStartDate() > $limitDateHistorize
+                && date_add($o->getStartDate(), date_interval_create_from_date_string($o->getDuration() . ' minutes')) < $now) { // On marque l'activité en Passée
                 $o->setState($states[4]);
+                $this->em->persist($o);
+            } elseif ($o->getState()->getLibelle() != 'Activité en cours'
+                && $o->getState()->getLibelle() != 'Annulée'
+                && $o->getStartDate() < $now
+                && date_add($o->getStartDate(), date_interval_create_from_date_string($o->getDuration() . ' minutes')) > $now) { // On marque l'activité en En cours
+                $o->setState($states[3]);
                 $this->em->persist($o);
             }
         }
