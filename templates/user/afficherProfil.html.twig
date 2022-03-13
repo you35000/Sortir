@@ -32,7 +32,11 @@
                 </div>
             </div>
             <div class="text-center">
-                <a href="{{ path('outing_details',{'id':outing.id}) }}" class="btn btn-outline-secondary">Retour</a>
+                {% if outing is defined %}
+                    <a href="{{ path('outing_details',{'id':outing.id}) }}" class="btn btn-outline-secondary">Retour</a>
+                {% else %}
+                    <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary">Retour</a>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -78,7 +78,9 @@
                                 {% if app.user in o.attendees %}Inscrit {% endif %}
                                 {% if not app.user in o.attendees %}Non Inscrit {% endif %}
                             </td>
-                            <td>{{ o.organizer.firstname }}</td>
+                            <td>
+                                <a href="{{ path('display_organizer',{'id':o.organizer.id}) }}">{{ o.organizer.pseudo }}</a>
+                            </td>
                             <td>
                                 {# Publication de la sortie si elle est créée et que l'utilisateur connecté est bien l'organisateur #}
                                 {% if (o.organizer == app.user) and (o.state.libelle == 'Créée') %}
@@ -88,7 +90,7 @@
                                     </a>
                                 {% endif %}
                                 {# Si l'utilisateur est inscrit, il peut se désister avant le début de l'activité #}
-                                {% if (app.user in o.attendees) and (o.state.libelle == 'Ouverte') or (o.state.libelle == 'Clôturée') %}
+                                {% if (app.user in o.attendees) and ((o.state.libelle == 'Ouverte') or (o.state.libelle == 'Clôturée')) %}
                                     <a href="{{ path('outing_withdraw',{'id':o.id}) }}" class="btn btn-danger"
                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Se désister">
                                         <i class="fa fa-user-minus"></i>

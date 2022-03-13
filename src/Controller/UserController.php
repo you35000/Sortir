@@ -30,6 +30,16 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/display_organizer/{id}", name="display_organizer")
+     */
+    public function ezezdS(User $user, Request $request): Response
+    {
+        return $this->render('user/afficherProfil.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+    /**
      * @Route("/monProfil/", name="monProfil")
      */
 
