@@ -70,6 +70,7 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
             return $this->redirectToRoute('app_outing');
+
         }
         return $this->render('user/monProfil.html.twig', [
             'form' => $form->createView(),
