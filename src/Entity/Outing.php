@@ -38,7 +38,7 @@ class Outing
 
     /**
      * @ORM\Column(type="datetime")
-     *
+     * @Assert\DateTime()
      */
     private $limitDate;
 

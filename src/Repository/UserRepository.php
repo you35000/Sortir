@@ -92,9 +92,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
-    public function loadUserByUsername(string $username)
+    public function loadUserByUsername(string $usernameOrEmail)
     {
-        // TODO: Implement loadUserByUsername() method.
+        $entityManager = $this->getEntityManager();
+        return $entityManager->createQuery(
+            'SELECT u
+                FROM App\Entity\User u
+                WHERE u.pseudo = :query
+                OR u.email = :query'
+        )
+            ->setParameter('query', $usernameOrEmail)
+            ->getOneOrNullResult();
     }
 
     public function __call($name, $arguments)
