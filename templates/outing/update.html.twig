@@ -3,29 +3,129 @@
 {% block title %}Nouvelle sortie{% endblock %}
 
 {% block main %}
-    <div class="col-6 offset-3">
-        <h2>Modifier votre sortie</h2>
+    <div class="col-8 offset-2">
+        <h2>Créer votre sortie</h2>
         {{ form_start(form) }}
-        <div class="row">
+        <div class="row mt-5">
             <div class="col-6">
-                {{ form_row(form.name) }}
-                {{ form_row(form.startDate) }}
-                {{ form_row(form.limitDate) }}
-                {{ form_row(form.nbInscription) }}
-                {{ form_row(form.duration) }}
-                {{ form_row(form.outingInfo) }}
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.name) }}
+                    <label for="name">{{ form_label(form.name) }}</label>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ form_row(form.startDate) }}
+                    </div>
+                    <div class="col-6">
+                        {{ form_row(form.limitDate ) }}
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.nbInscription) }}
+                            <label for="name">{{ form_label(form.nbInscription) }}</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.duration) }}
+                            <label for="name">{{ form_label(form.duration) }}</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.outingInfo,{'attr':{'style':'height:150px'}}) }}
+                            <label for="name">{{ form_label(form.outingInfo) }}</label>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-6">
-                {{ form_row(form.campus) }}
-                {{ form_row(form.Place) }}
+            <div id="app" class="col-6">
+                <div class="form-floating mb-3">
+                    {{ form_widget(form.campus) }}
+                    <label for="name">{{ form_label(form.campus) }}</label>
+                </div>
+                <div class="row">
+                    {% verbatim %}
+                <div class="col-6">
+                    <div class="form-floating mb-3">
+                        <select id="city" class="form-select" v-model="selectedCity" @change="filter(selectedCity)">
+                            <option v-for="city in cities" v-bind:value="city">{{city.name}}</option>
+                        </select>
+                        <label for="city">Ville</label>
+                    </div>
+                </div>
+                {% endverbatim %}
+                    <div class="col-6">
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.place, {'attr':{'v-model':'selectedPlace', '@change':'log(selectedPlace)'}}) }}
+                            <label for="name">{{ form_label(form.place) }}</label>
+                        </div>
+                    </div>
+                    {% verbatim %}
+                <div class="col-12">
+                <div class="card" v-if="selectedPlace">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Localisation</h5>
+                    </div>
+                    <ul class="list-group list-group-flush px-5 py-1">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-6">
+                                    Rue :
+                                </div>
+                                <div class="col-6">
+                                    {{selectedPlace.street}}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-6">
+                                    Code Postal :
+                                </div>
+                                <div class="col-6">
+<!--                                    {{selectedPlace.city.postCode}}-->
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-6">
+                                    Longitude :
+                                </div>
+                                <div class="col-6">
+                                    {{selectedPlace.longitude}}
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-6">
+                                    Latitude :
+                                </div>
+                                <div class="col-6">
+                                    {{selectedPlace.latitude}}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                </div>
+                {% endverbatim %}
 
+                </div>
             </div>
             <div class="text-center d-flex justify-content-center">
-                {#                {{ form_row(form.create,{ 'attr': {'class': 'btn btn-primary'} }) }} #}
-                {#                {{ form_row(form.published,{ 'attr': {'class': 'btn btn-success mx-5'} }) }} #}
-                <a href="{{ path('app_outing') }}" class="btn btn-secondary">Annuler</a>
+                {{ form_row(form.create,{ 'attr': {'class': 'btn btn-primary'} }) }}
+                {{ form_row(form.published,{ 'attr': {'class': 'btn btn-success mx-5'} }) }}
+                <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary mb-3">Annuler</a>
             </div>
         </div>
         {{ form_end(form) }}
     </div>
+{% endblock %}
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x"></script>
+<script src="{{ asset('js/main.js') }}"></script>
 {% endblock %}

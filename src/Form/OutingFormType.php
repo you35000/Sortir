@@ -27,26 +27,26 @@ class OutingFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom de la sortie: ',
+                'label' => 'Nom de la sortie',
                 'trim' => true,
                 'required' => true,
                 'attr' => ['placeholder' => 'Nom de votre sortie'],
             ])
             ->add('startDate', DateTimeType::class, [
-                'label' => 'Date et heure de la sortie:',
+                'label' => 'Date et heure de la sortie',
                 'widget' => 'single_text',
-                'html5' => true,
+                'data' => (new \DateTime())->modify('+1 day'),
             ])
-            ->add('limitDate', DateType::class, [
-                'label' => 'Date limite inscription : ',
+            ->add('limitDate', DateTimeType::class, [
+                'label' => 'Date limite inscription',
                 'widget' => 'single_text',
-
+                'data' => (new \DateTime())->modify('+20 hours'),
             ])
             ->add('nbInscription', IntegerType::class, [
-                'label' => 'Nombre de places : ',
+                'label' => 'Nombre de places',
                 'trim' => true,
                 'required' => true,
-                'attr' => ['min' => 0],
+                'attr' => ['min' => 0, 'placeholder' => 'Nombre de places'],
             ])
             ->add('duration', IntegerType::class, [
                 'label' => 'Durée (min): ',
@@ -55,12 +55,9 @@ class OutingFormType extends AbstractType
                 'attr' => ['min' => 0, 'placeholder' => 'Durée en minutes'],
             ])
             ->add('outingInfo', TextareaType::class, [
-                'label' => 'Description et infos :',
+                'label' => 'Description et infos',
                 'required' => true,
-            ])
-            ->add('organizer', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'pseudo',
+                'attr' => ['placeholder' => 'Description et infos'],
             ])
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
@@ -68,57 +65,28 @@ class OutingFormType extends AbstractType
                 'choice_label' => 'name'
 
             ])
-            ->add('Place', EntityType::class, [
+            ->add('place', EntityType::class, [
                 'class' => Place::class,
                 'required' => true,
                 'label' => 'Lieu :',
                 'placeholder' => 'Choisissez un lieu',
                 'choice_label' => 'name',
-            ])
-            ->add('Street', TextType::class, [
-                'label' => 'Rue :',
-                'mapped' => false,
-                'attr' => ['readonly' => true,]
-            ])
-            ->add('Post_code', TextType::class, [
-                'label' => 'Code postal :',
-                'mapped' => false,
-                'attr' => ['readonly' => true,
-                ]
-            ])
-            ->add('latitude', NumberType::class, [
-                'label' => 'Latitude :',
-                'mapped' => false,
-                'attr' => ['readonly' => true,
-                ]
-            ])
-            ->add('longitude', NumberType::class, [
-                'label' => 'Longitude :',
-                'mapped' => false,
-                'attr' => ['readonly' => true,
-                ]
             ]);
 
         $builder->add('create', SubmitType::class, [
-            'label' => 'create',
+            'label' => 'Créer',
             'attr' => array(
                 'class' => 'btn btn-outline-secondary',
             )
         ]);
 
         $builder->add('published', SubmitType::class, [
-            'label' => 'published',
+            'label' => 'Publier',
             'attr' => array(
                 'class' => 'btn btn-outline-secondary',
             )
         ]);
 
-        $builder->add('button', ButtonType::class, [
-            'label' => 'Annuler',
-            'attr' => array(
-                'class' => 'btn btn-outline-secondary',
-            )
-        ]);
     }
 
 

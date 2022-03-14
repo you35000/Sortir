@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OutingRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,7 +31,7 @@ class Outing
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Expression(
-     *     "this.getStartDate() > new DateTime()",
+     *     "this.getStartDate() > this.getNow()",
      *      message="La date doit être supérieur à aujourd\'hui")
      */
     private $startDate;
@@ -38,7 +39,10 @@ class Outing
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
+     * @Assert\Expression(
+     *     "this.getLimitDate() < this.getStartDate()",
+     *     message="La date de limite d'inscription doit être antérieur à la date de début de sortie"
+     * )
      */
     private $limitDate;
 
@@ -253,5 +257,10 @@ class Outing
         $this->duration = $duration;
 
         return $this;
+    }
+
+    public function getNow(): DateTime
+    {
+        return new DateTime();
     }
 }

@@ -170,6 +170,7 @@ class OutingController extends AbstractController
 
         $form = $this->createForm(OutingFormType::class);
         $form->handleRequest($req);
+       
         if ($form->isSubmitted() && $form->isValid()) {
             $newOuting = $form->getData();
             $newOuting->setOrganizer($this->getUser());
