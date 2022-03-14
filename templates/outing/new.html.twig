@@ -7,23 +7,35 @@
         <h2>Créer votre sortie</h2>
         {{ form_start(form) }}
         <div class="row">
+            {{ form_row(form.organizer) }}
             <div class="col-6">
                 {{ form_row(form.name) }}
                 {{ form_row(form.startDate) }}
-                {{ form_row(form.limitDate) }}
+                {{ form_row(form.limitDate ) }}
+                <div class="col-5">
                 {{ form_row(form.nbInscription) }}
+                </div>
                 {{ form_row(form.duration) }}
                 {{ form_row(form.outingInfo) }}
             </div>
             <div class="col-6">
                 {{ form_row(form.campus) }}
+                <div>
+                    <div class="col-6">
                 {{ form_row(form.Place) }}
-
+                    <a href="{{ path('places') }}" class="btn btn-primary">Lieux</a>
+                    </div>
+                </div>
+                {{ form_row(form.Street) }}
+                {{ form_row(form.Post_code) }}
+                {{ form_row(form.latitude) }}
+                {{ form_row(form.longitude) }}
             </div>
             <div class="text-center d-flex justify-content-center">
-                {{ form_row(form.create,{ 'attr': {'class': 'btn btn-primary'} }) }}
+                {{ form_row(form.create,{ 'attr': {'class': 'btn btn-primary mx-5'} }) }}
                 {{ form_row(form.published,{ 'attr': {'class': 'btn btn-success mx-5'} }) }}
-                <a href="{{ path('app_outing') }}" class="btn btn-secondary">Annuler</a>
+                {{ form_row(form.button,{ 'attr': {'class': 'btn btn-secondary mx-5'} }) }}
+{#                <a href="{{ path('app_outing') }}" class="btn btn-secondary">Annuler</a>#}
             </div>
         </div>
         {{ form_end(form) }}

@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -36,7 +37,7 @@ class OutingFormType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => true,
             ])
-            ->add('limitDate', DateTimeType::class, [
+            ->add('limitDate', DateType::class, [
                 'label' => 'Date limite inscription : ',
                 'widget' => 'single_text',
 
@@ -60,7 +61,7 @@ class OutingFormType extends AbstractType
 
             ->add('organizer', EntityType::class, [
                 'class'=>User::class,
-                'choice_label'=>'pseudo'
+                'choice_label'=>'pseudo',
             ])
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
@@ -107,14 +108,14 @@ class OutingFormType extends AbstractType
                 ]
             ]);
 
-        $builder->add('submit', SubmitType::class, [
+        $builder->add('create', SubmitType::class, [
             'label' => 'create',
             'attr' => array(
                 'class' => 'btn btn-outline-secondary',
             )
         ]);
 
-        $builder->add('submit', SubmitType::class, [
+        $builder->add('published', SubmitType::class, [
             'label' => 'published',
             'attr' => array(
                 'class' => 'btn btn-outline-secondary',
