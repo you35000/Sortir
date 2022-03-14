@@ -167,8 +167,7 @@ class OutingController extends AbstractController
      */
     public function new(Request $req, EntityManagerInterface $em): Response
     {
-        $outing = new Outing();
-        dd($em->getRepository(Campus::class)->find(34)->getName());
+
         $form = $this->createForm(OutingFormType::class);
         $form->handleRequest($req);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -180,6 +179,7 @@ class OutingController extends AbstractController
             } else {
                 $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
             };
+            $newOuting->addAttendee($this->getUser());
 
             $em->persist($newOuting);
             $em->flush();

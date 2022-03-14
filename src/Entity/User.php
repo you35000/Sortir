@@ -77,6 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $campus;
 
     /**
+     *
      * @ORM\Column(type="string", length=20)
      */
     private $phone;

@@ -58,25 +58,16 @@ class OutingFormType extends AbstractType
                 'label' => 'Description et infos :',
                 'required' => true,
             ])
-
             ->add('organizer', EntityType::class, [
-                'class'=>User::class,
-                'choice_label'=>'pseudo',
+                'class' => User::class,
+                'choice_label' => 'pseudo',
             ])
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
                 'label' => 'Campus : ',
-                'choice_label'=>'name'
+                'choice_label' => 'name'
 
             ])
-//            ->add('City', EntityType::class, [
-//                'class' => City::class,
-//                'required' => true,
-//                'mapped' => false,
-//                'label' => 'Ville :',
-//                'placeholder' => 'Choisissez une ville',
-//                'choice_label' => 'nom',
-//            ])
             ->add('Place', EntityType::class, [
                 'class' => Place::class,
                 'required' => true,
@@ -129,8 +120,6 @@ class OutingFormType extends AbstractType
             )
         ]);
     }
-
-
 
 
     public function configureOptions(OptionsResolver $resolver): void

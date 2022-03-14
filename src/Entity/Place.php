@@ -6,6 +6,7 @@ use App\Repository\PlaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=PlaceRepository::class)
@@ -41,6 +42,7 @@ class Place
 
     /**
      * @ORM\OneToMany(targetEntity=Outing::class, mappedBy="Place")
+     * @Ignore()
      */
     private $outings;
 
