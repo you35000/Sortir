@@ -114,18 +114,25 @@ class OutingController extends AbstractController
     /**
      * @Route ("/cancel-outing/{id}", name="outing_cancel")
      */
-    public function cancel(Outing $outing, EntityManagerInterface $em): Response
+    public function cancel(Outing $outing, Request $req, EntityManagerInterface $em): Response
     {
-        if ($outing->getOrganizer() == $this->getUser() && $outing->getStartDate() > new \DateTime('now')) {
-            $outing->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Annulée']));
-            $em->persist($outing);
-            $em->flush();
-            return $this->redirectToRoute('app_outing');
-        } else {
-            $message = 'Impossible d\'annuler la sortie';
-            //TODO : envoyer le message
-            return $this->redirectToRoute('app_outing');
+        $message = '';
+        if ($req->request->get('submit')) {
+            if ($outing->getOrganizer() === $this->getUser() && $outing->getStartDate() > new \DateTime('now')) {
+                $outing->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Annulée']));
+                $outing->setOutingInfo('!!! ANNULATION !!! ' . $req->request->get('outingInfo'));
+                $em->persist($outing);
+                $em->flush();
+                return $this->redirectToRoute('app_outing');
+            } else {
+                $message = 'Impossible d\'annuler la sortie';
+            }
         }
+
+        return $this->render('outing/cancel.html.twig', [
+            'outing' => $outing,
+            'message' => $message
+        ]);
     }
 
     /**
@@ -186,13 +193,13 @@ class OutingController extends AbstractController
      * @Route ("/consult-outing/{id}", name="consult_outing",  requirements={"id"="\d+"})
      */
 
-    public  function consult(Request  $req, OutingRepository $o, PlaceRepository $p, UserRepository $u) : Response
+    public function consult(Request $req, OutingRepository $o, PlaceRepository $p, UserRepository $u): Response
     {
         $today = new \DateTime('now');
         $OneMonthAgo = $today->sub(new \DateInterval('P1M'));
-        $idOuting= $req->get('id');
+        $idOuting = $req->get('id');
         $outing = $o->find($idOuting);
-        if ($outing->getStartDate()<$OneMonthAgo){
+        if ($outing->getStartDate() < $OneMonthAgo) {
             $this->addFlash('danger', 'la sortie a expirée');
             return $this->redirectToRoute('default_home');
         }

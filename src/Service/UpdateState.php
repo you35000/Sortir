@@ -41,20 +41,29 @@ class UpdateState
         $outings = $this->outingRepository->findAllExceptHistorized();
         $states = $this->stateRepository->findAll();
         foreach ($outings as $o) {
-            $now = new \DateTime('now');
-            $limitDateHistorize = date_sub($now, date_interval_create_from_date_string('1 month'));
+            $now = new \DateTime();
+            $now2 = clone $now;
+            $limitDateHistorize = $now2->modify('-1 month');
+
             if ($o->getStartDate() < $limitDateHistorize) { //On marque l'activité en Historisée
                 $o->setState($states[6]);
                 $this->em->persist($o);
             } elseif ($o->getState()->getLibelle() != 'Passée'
                 && $o->getStartDate() > $limitDateHistorize
-                && date_add($o->getStartDate(), date_interval_create_from_date_string($o->getDuration() . ' minutes')) < $now) { // On marque l'activité en Passée
+                && date_add(clone $o->getStartDate(), date_interval_create_from_date_string($o->getDuration() . ' minutes')) < $now) { // On marque l'activité en Passée
                 $o->setState($states[4]);
+                $this->em->persist($o);
+            } elseif ($o->getState()->getLibelle() != 'Clôturée'
+                && $o->getLimitDate() < $now
+                && $o->getStartDate() > $now) {
+
+                $o->setState($states[2]);
+                
                 $this->em->persist($o);
             } elseif ($o->getState()->getLibelle() != 'Activité en cours'
                 && $o->getState()->getLibelle() != 'Annulée'
                 && $o->getStartDate() < $now
-                && date_add($o->getStartDate(), date_interval_create_from_date_string($o->getDuration() . ' minutes')) > $now) { // On marque l'activité en En cours
+                && date_add(clone $o->getStartDate(), date_interval_create_from_date_string($o->getDuration() . ' minutes')) > $now) { // On marque l'activité en En cours
                 $o->setState($states[3]);
                 $this->em->persist($o);
             }
