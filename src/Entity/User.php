@@ -9,10 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity("pseudo", message="Ce pseudo est déjà utilisé")
+ * @UniqueEntity(fields={"pseudo"}, message="Ce pseudo est déjà utilisé")
+ * @uniqueEntity(fields={"email"}, message="Cet email est déjà utilisé")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -25,6 +28,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email
      */
     private $email;
 
@@ -79,11 +84,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      *
      * @ORM\Column(type="string", length=20)
+     * @Assert\Regex (
+     *     pattern="^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$",
+     *     match=false,
+     *     message="Mauvais format"
+     *)
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=50, unique=true)
+     * @Assert\Length(max = 50)
      */
     private $pseudo;
 

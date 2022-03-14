@@ -98,6 +98,12 @@
     "fzaninotto/faker": {
         "version": "v1.9.2"
     },
+    "giggsey/libphonenumber-for-php": {
+        "version": "8.12.45"
+    },
+    "giggsey/locale": {
+        "version": "2.1"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
     },

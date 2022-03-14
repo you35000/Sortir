@@ -45,6 +45,8 @@ class UserFormType extends AbstractType
                 'label' => 'Email',
                 'trim' => true,
                 'required' => true,
+                'invalid_message' => 'Cet email est déjà utilisé'
+
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
