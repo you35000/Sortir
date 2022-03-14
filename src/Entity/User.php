@@ -14,8 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"pseudo"}, message="Ce pseudo est déjà utilisé")
- * @uniqueEntity(fields={"email"}, message="Cet email est déjà utilisé")
+ * @UniqueEntity("pseudo", message="Ce pseudo est déjà utilisé")
+ * @UniqueEntity("email", message="Cet email est déjà utilisé")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -41,16 +41,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length (
+     *     min="6",
+     *     minMessage="Mot de passe trop court")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *     max=50,
+     *     maxMessage="Votre prénom ne peut contenir au maximum {{max}} caractères")
+     * @Assert\Regex(
+     *     pattern="/^[a-z ,.'-]+$/i",
+     *     message="Prénom incorrect")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *     max=50,
+     *     maxMessage="Votre nom ne peut contenir au maximum {{max}} caractères")
+     * @Assert\Regex(
+     *     pattern="/^[a-z ,.'-]+$/i",
+     *     message="Nom incorrect")
      */
     private $lastName;
 
@@ -84,17 +99,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      *
      * @ORM\Column(type="string", length=20)
-     * @Assert\Regex (
-     *     pattern="^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$",
-     *     match=false,
-     *     message="Mauvais format"
-     *)
+     * @Assert\Regex(
+     *     pattern="/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/",
+     *     message="Le format de téléphone est incorrect")
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=50, unique=true)
-     * @Assert\Length(max = 50)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     min=5,
+     *     max = 50,
+     *     maxMessage="Le pseudo ne peut dépasser 50 caractères",
+     *     minMessage="Le pseudo doit contenir au moins 5 caractères")
      */
     private $pseudo;
 

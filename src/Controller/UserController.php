@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Outing;
 use App\Entity\User;
 use App\Form\UserFormType;
@@ -10,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -19,9 +19,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/afficherProfil/{outing}/{user}", name="afficherProfil")
+     * @Route("/display-user/{outing}/{user}", name="display_user")
      */
-    public function afficherProfil(Outing $outing, User $user, Request $request): Response
+    public function displayUser(Outing $outing, User $user): Response
     {
         return $this->render('user/displayProfil.html.twig', [
             'user' => $user,
@@ -30,25 +30,30 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/display_organizer/{id}", name="display_organizer")
+     * @Route("/display-organizer/{id}", name="display_organizer")
      */
-    public function ezezdS(User $user, Request $request): Response
+    public function displayOrganizer(User $user): Response
     {
         return $this->render('user/displayProfil.html.twig', [
-            'user' => $user,
+            'user' => $user
         ]);
     }
 
     /**
-     * @Route("/monProfil/", name="monProfil")
+     * @Route("/display-myprofile/", name="display_my_profile")
      */
-
-    public function ajouterProfil(Request $req, EntityManagerInterface $em, SluggerInterface $slugger): Response
+    public function displayMyprofil(EntityManagerInterface $manager, Request $req, SluggerInterface $slugger, UserPasswordHasherInterface $hasher): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($req);
         if ($form->isSubmitted() && $form->isValid()) {
+            $password = $form->get('password')->getData();
+            if ($password) {
+                $hashedPassword = $hasher->hashPassword($user, $password);
+                $user->setPassword($hashedPassword);
+            }
+
             $picture = $form->get('picture')->getData();
             if ($picture) {
                 $originalFilename = pathinfo($picture->getClientOriginalName(), PATHINFO_FILENAME);
@@ -67,16 +72,14 @@ class UserController extends AbstractController
                 $user->setPicture($newFilename);
             }
 
-            $em->persist($user);
-            $em->flush();
-            return $this->redirectToRoute('app_outing');
-
+            $manager->persist($user);
+            $manager->flush();
+            $this->redirectToRoute('app_outing');
         }
-        return $this->render('user/monProfil.html.twig', [
+
+        return $this->render('user/myProfile.html.twig', [
+            'user' => $user,
             'form' => $form->createView(),
-            'user' => $user
         ]);
-
     }
-
 }

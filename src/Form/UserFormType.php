@@ -45,8 +45,6 @@ class UserFormType extends AbstractType
                 'label' => 'Email',
                 'trim' => true,
                 'required' => true,
-                'invalid_message' => 'Cet email est déjà utilisé'
-
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -72,7 +70,8 @@ class UserFormType extends AbstractType
                             'application/jpg',
                             'application/jpeg',
                         ],
-                        'mimeTypesMessage' => 'Vérifier l\'extention de votre photo',
+                        'mimeTypesMessage' => 'L\'extension de cette image est incorrect',
+                        'maxSizeMessage' => 'L\'image est trop volumineuse, veuillez sélectionner une autre image'
                     ])
                 ],
                 'help' => 'Fichiers .png, .jpg, .jpeg acceptés. 1024k max',
@@ -83,7 +82,7 @@ class UserFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class, 'validation_groups' => ['monProfil'],
+            'data_class' => User::class
         ]);
     }
 }
