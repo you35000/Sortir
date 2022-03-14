@@ -1,21 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin : Lieux{% endblock %}
+{% block title %}Admin : Campus{% endblock %}
 
 {% block main %}
     <div class="col-6 offset-3">
-        <h2>Gestion des Lieux</h2>
+        <h2>Gestion des Campus</h2>
         <form action="{{ path('campus') }}" method="post">
             <div class="row">
                 <div class="col-6 offset-1 ">
-                    <div class="form-floating my-3">
-                        <input type="text" name="search" id="search" placeholder="Rechercher une ville"
+                    <div class="form-floating">
+                        <input type="text" name="search" id="search" placeholder="Recherche un campus"
                                class="form-control">
-                        <label for="search">Rechercher une ville</label>
+                        <label for="search">Rechercher un campus</label>
                     </div>
                 </div>
-                <div class="col-2 offset-1 align-middle">
-                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                <div class="col-2 offset-1">
+                    <button type="submit" class="btn btn-primary my-auto">Rechercher</button>
                 </div>
             </div>
         </form>
@@ -29,20 +29,27 @@
             <tbody>
             {% for c in campus %}
                 <tr>
-                    <th>{{ c.name }}</th>
+                    <th><input type="text" id="campusName{{ c.id }}" readonly class="form-control-plaintext"
+                               value="{{ c.name }}">
+                    </th>
                     <th>
-                        <a href="{{ path('update_campus',{'id':c.id}) }}" class="btn btn-secondary"
-                           data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
+                        <button id="update{{ c.id }}" class="btn btn-secondary update"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
                             <i class="fa fa-pencil"></i>
-                        </a>
-                        <a href="{{ path('delete_campus',{'id':c.id}) }}" class="btn btn-danger"
-                           data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
+                        </button>
+                        <button class="btn btn-danger"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
                             <i class="fa fa-trash-can"></i>
-                        </a>
+                        </button>
                     </th>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
+
+{% endblock %}
+
+{% block javascript%}
+<script src="{{ asset('js/campus.js') }}" type="text/javascript"></script>
 {% endblock %}

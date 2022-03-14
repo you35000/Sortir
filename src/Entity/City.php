@@ -6,6 +6,7 @@ use App\Repository\CityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * @ORM\Entity(repositoryClass=CityRepository::class)
@@ -24,9 +25,10 @@ class City
      */
     private $name;
 
-    
+
     /**
      * @ORM\OneToMany(targetEntity=Place::class, mappedBy="city")
+     * @Ignore()
      */
     private $places;
 
@@ -57,7 +59,6 @@ class City
         return $this;
     }
 
-    
 
     /**
      * @return Collection<int, Place>

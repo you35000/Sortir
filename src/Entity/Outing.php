@@ -6,6 +6,7 @@ use App\Repository\OutingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OutingRepository::class)
@@ -21,22 +22,29 @@ class Outing
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Le nom de la sortie ne peut être nulle")
+     *
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
+     * @Assert\Expression("this.getStartDate()>new DateTime(), message="La date doit être supérieur à aujourd'hui")
      */
     private $startDate;
 
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $limitDate;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
+     * @Assert\Range(min="2",max="150",notInRangeMessage="Le nombre max de place doit être compris entre {{min}} et {{max}}"
      */
     private $nbInscription;
 
@@ -53,18 +61,21 @@ class Outing
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="organizedOutings")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private $organizer;
 
     /**
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="outings")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private $campus;
 
     /**
      * @ORM\ManyToOne(targetEntity=Place::class, inversedBy="outings")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private $Place;
 
@@ -76,6 +87,7 @@ class Outing
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $duration;
 

@@ -4,10 +4,10 @@
 
 {% block main %}
     <div class="row">
-        {#        <div> #}
-        {#            <p>Créer une nouvelle sortie <a href="{{ path('outing_new') }}" class="btn btn-success"><i #}
-        {#                            class="fa fa-plus"></i></a></p> #}
-        {#        </div> #}
+        <div>
+            <p>Créer une nouvelle sortie <a href="{{ path('outing_new') }}" class="btn btn-success"><i
+                            class="fa fa-plus"></i></a></p>
+        </div>
         <div class="col-3 my-5 bg-dark text-light p-4">
 
             {{ form_start(form) }}
@@ -53,23 +53,23 @@
                 </thead>
                 <tbody>
                 {% for o in outings %}
-                    {% if ((o.state.libelle == 'Créée')and(app.user == o.organizer)) or ((o.state.libelle != 'Créée')and(app.user!=o.organizer)) %}
+                    {#                    {% if ((o.state.libelle == 'Créée')and(app.user == o.organizer)) or ((o.state.libelle != 'Créée')and(app.user!=o.organizer)) %} #}
 
-                        <tr>
-                            <td><a href="{{ path('outing_details',{'id':o.id}) }}">{{ o.name }}</a></td>
-                            <td>
-                                <div class="row g-0">
-                                    <div class="col-6">
-                                        {{ o.startDate | localizeddate('none', 'none', 'fr', null, 'd MMM yy') }}
-                                    </div>
-                                    <div class="col-6">
-                                        {{ o.startDate | localizeddate('none', 'none', 'fr', null, 'à HH:m') }}
-                                    </div>
+                    <tr>
+                        <td><a href="{{ path('outing_details',{'id':o.id}) }}">{{ o.name }}</a></td>
+                        <td>
+                            <div class="row g-0">
+                                <div class="col-6">
+                                    {{ o.startDate | localizeddate('none', 'none', 'fr', null, 'd MMM yy') }}
                                 </div>
-                            </td>
-                            <td>{{ o.limitDate | localizeddate('none', 'none', 'fr', null, 'd MMM Y') }}</td>
-                            <td>{{ o.attendees|length }} / {{ o.nbInscription }}</td>
-                            <td><span class="badge
+                                <div class="col-6">
+                                    {{ o.startDate | localizeddate('none', 'none', 'fr', null, 'à HH:m') }}
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ o.limitDate | localizeddate('none', 'none', 'fr', null, 'd MMM Y') }}</td>
+                        <td>{{ o.attendees|length }} / {{ o.nbInscription }}</td>
+                        <td><span class="badge
                                 {% if o.state.libelle == 'Annulée' %}
                                     bg-danger
                                 {% elseif o.state.libelle == 'Ouverte' %}
@@ -83,59 +83,59 @@
                                 {% elseif o.state.libelle == ('Passée' or 'Historisée') %}
                                     bg-dark text-light
                                 {% endif %}">{{ o.state.libelle }}</span></td>
-                            <td>
-                                {% if app.user in o.attendees %}Inscrit {% endif %}
-                                {% if not app.user in o.attendees %}Non Inscrit {% endif %}
-                            </td>
-                            <td>
-                                <a href="{{ path('display_organizer',{'id':o.organizer.id}) }}">{{ o.organizer.pseudo }}</a>
-                            </td>
-                            <td>
-                                {# Publication de la sortie si elle est créée et que l'utilisateur connecté est bien l'organisateur #}
-                                {% if (o.organizer == app.user) and (o.state.libelle == 'Créée') %}
-                                    <a href="{{ path('outing_published',{'id':o.id}) }}" class="btn btn-success"
-                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Publier">
-                                        <i class="fa fa-bullhorn"></i>
-                                    </a>
-                                {% endif %}
-                                {# Si l'utilisateur est inscrit, il peut se désister avant le début de l'activité #}
-                                {% if (app.user in o.attendees) and ((o.state.libelle == 'Ouverte') or (o.state.libelle == 'Clôturée')) %}
-                                    <a href="{{ path('outing_withdraw',{'id':o.id}) }}" class="btn btn-danger"
-                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Se désister">
-                                        <i class="fa fa-user-minus"></i>
-                                    </a>
-                                {% endif %}
-                                {# Si l'utilisateur n'est pas dans la liste des participants est que le statut est ouvert, il peut s'inscrire #}
-                                {% if (app.user not in o.attendees) and (o.state.libelle == 'Ouverte') %}
-                                    <a href="{{ path('outing_register',{'id':o.id}) }}" class="btn btn-primary"
-                                       data-bs-toggle="tooltip" data-bs-placement="top" title="S'inscrire">
-                                        <i class="fa fa-user-plus"></i>
-                                    </a>
-                                {% endif %}
-                                {# Si l'utilisateur est bien l'organisateur et que l'activité n'a pas débutée, il peut l'annuler #}
-                                {% if (app.user == o.organizer) and ((o.state.libelle == 'Ouverte') or (o.state.libelle == 'Clôturée')) %}
-                                    <a href="{{ path('outing_cancel',{'id':o.id}) }}" class="btn btn-warning"
-                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Annuler">
-                                        <i class="fa fa-ban"></i>
-                                    </a>
-                                {% endif %}
-                                {# Si l'utilisateur est bien l'organisateur et que l'activité n'est pas ouverte il peut la supprimer #}
-                                {% if (app.user == o.organizer) and (o.state.libelle == 'Créée') %}
-                                    <a href="{{ path('outing_delete',{'id':o.id}) }}" class="btn btn-danger"
-                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                {% endif %}
-                                {# Si l'utilisateur est bien l'organisateur et que l'activité n'est pas ouverte il peut la modifier #}
-                                {% if (app.user == o.organizer) and (o.state.libelle == 'Créée') %}
-                                    <a href="{{ path('outing_update',{'id':o.id}) }}" class="btn btn-secondary"
-                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endif %}
+                        <td>
+                            {% if app.user in o.attendees %}Inscrit {% endif %}
+                            {% if not app.user in o.attendees %}Non Inscrit {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('display_organizer',{'id':o.organizer.id}) }}">{{ o.organizer.pseudo }}</a>
+                        </td>
+                        <td>
+                            {# Publication de la sortie si elle est créée et que l'utilisateur connecté est bien l'organisateur #}
+                            {% if (o.organizer == app.user) and (o.state.libelle == 'Créée') %}
+                                <a href="{{ path('outing_published',{'id':o.id}) }}" class="btn btn-success"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Publier">
+                                    <i class="fa fa-bullhorn"></i>
+                                </a>
+                            {% endif %}
+                            {# Si l'utilisateur est inscrit, il peut se désister avant le début de l'activité #}
+                            {% if (app.user in o.attendees) and ((o.state.libelle == 'Ouverte') or (o.state.libelle == 'Clôturée')) %}
+                                <a href="{{ path('outing_withdraw',{'id':o.id}) }}" class="btn btn-danger"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Se désister">
+                                    <i class="fa fa-user-minus"></i>
+                                </a>
+                            {% endif %}
+                            {# Si l'utilisateur n'est pas dans la liste des participants est que le statut est ouvert, il peut s'inscrire #}
+                            {% if (app.user not in o.attendees) and (o.state.libelle == 'Ouverte') %}
+                                <a href="{{ path('outing_register',{'id':o.id}) }}" class="btn btn-primary"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="S'inscrire">
+                                    <i class="fa fa-user-plus"></i>
+                                </a>
+                            {% endif %}
+                            {# Si l'utilisateur est bien l'organisateur et que l'activité n'a pas débutée, il peut l'annuler #}
+                            {% if (app.user == o.organizer) and ((o.state.libelle == 'Ouverte') or (o.state.libelle == 'Clôturée')) %}
+                                <a href="{{ path('outing_cancel',{'id':o.id}) }}" class="btn btn-warning"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Annuler">
+                                    <i class="fa fa-ban"></i>
+                                </a>
+                            {% endif %}
+                            {# Si l'utilisateur est bien l'organisateur et que l'activité n'est pas ouverte il peut la supprimer #}
+                            {% if (app.user == o.organizer) and (o.state.libelle == 'Créée') %}
+                                <a href="{{ path('outing_delete',{'id':o.id}) }}" class="btn btn-danger"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            {% endif %}
+                            {# Si l'utilisateur est bien l'organisateur et que l'activité n'est pas ouverte il peut la modifier #}
+                            {% if (app.user == o.organizer) and (o.state.libelle == 'Créée') %}
+                                <a href="{{ path('outing_update',{'id':o.id}) }}" class="btn btn-secondary"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {#                    {% endif %} #}
                 {% endfor %}
                 </tbody>
             </table>
