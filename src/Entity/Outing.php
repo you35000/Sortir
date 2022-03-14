@@ -29,22 +29,23 @@ class Outing
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
-     * @Assert\Expression("this.getStartDate()>new DateTime(), message="La date doit être supérieur à aujourd'hui")
+     * @Assert\Expression(
+     *     "this.getStartDate() > new DateTime()",
+     *      message="La date doit être supérieur à aujourd\'hui")
      */
     private $startDate;
 
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
+     *
      */
     private $limitDate;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank
-     * @Assert\Range(min="2",max="150",notInRangeMessage="Le nombre max de place doit être compris entre {{min}} et {{max}}"
+     * @Assert\Range(min="2",max="150",notInRangeMessage="Le nombre max de place doit être compris entre {{min}} et {{max}}")
      */
     private $nbInscription;
 
