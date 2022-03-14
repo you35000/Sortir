@@ -49,15 +49,6 @@ class OutingController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/outing_details/{id}", name="outing_details")
-     */
-    public function details(Outing $outing, EntityManagerInterface $mgr)
-    {
-        return $this->render('outing/detail.html.twig', [
-            'outing' => $outing,
-        ]);
-    }
 
     /**
      * @Route("/published/{id}", name="outing_published")
@@ -159,7 +150,7 @@ class OutingController extends AbstractController
     public function new(Request $req, EntityManagerInterface $em): Response
     {
         $outing = new Outing();
-        dd($em->getRepository(Campus::class)->find(34)->getName());
+        //dd($em->getRepository(Campus::class)->find(34)->getName());
         $form = $this->createForm(OutingFormType::class);
         $form->handleRequest($req);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -182,28 +173,14 @@ class OutingController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route ("/consult-outing/{id}", name="consult_outing",  requirements={"id"="\d+"})
+     * @Route("/outing_details/{id}", name="outing_details")
      */
-
-    public  function consult(Request  $req, OutingRepository $o, PlaceRepository $p, UserRepository $u) : Response
+    public function consult(Outing $outing, EntityManagerInterface $mgr)
     {
-        $today = new \DateTime('now');
-        $OneMonthAgo = $today->sub(new \DateInterval('P1M'));
-        $idOuting= $req->get('id');
-        $outing = $o->find($idOuting);
-        if ($outing->getStartDate()<$OneMonthAgo){
-            $this->addFlash('danger', 'la sortie a expirée');
-            return $this->redirectToRoute('default_home');
-        }
-        $lieu = $p->find($idOuting);
-        /** @var User $user */
-        $user = $this->getUser();
-
         return $this->render('outing/consultOuting.html.twig', [
             'outing' => $outing,
-            'place' => $p,
-            'user' => $user
         ]);
     }
 }

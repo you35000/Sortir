@@ -108,12 +108,18 @@ class OutingFormType extends AbstractType
             ]);
 
         $builder->add('submit', SubmitType::class, [
-            'label' => 'Enregistrer',
+            'label' => 'create',
             'attr' => array(
                 'class' => 'btn btn-outline-secondary',
             )
         ]);
 
+        $builder->add('submit', SubmitType::class, [
+            'label' => 'published',
+            'attr' => array(
+                'class' => 'btn btn-outline-secondary',
+            )
+        ]);
 
         $builder->add('button', ButtonType::class, [
             'label' => 'Annuler',
