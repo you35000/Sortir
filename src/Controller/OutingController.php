@@ -155,7 +155,9 @@ class OutingController extends AbstractController
      */
     public function update(Outing $outing, EntityManagerInterface $em): Response
     {
+        $form = $this->createForm(OutingFormType::class, $outing);
         return $this->render('outing/update.html.twig', [
+            'form' => $form->createView(),
             'outing' => $outing,
         ]);
     }

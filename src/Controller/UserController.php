@@ -23,7 +23,7 @@ class UserController extends AbstractController
      */
     public function afficherProfil(Outing $outing, User $user, Request $request): Response
     {
-        return $this->render('user/afficherProfil.html.twig', [
+        return $this->render('user/displayProfil.html.twig', [
             'user' => $user,
             'outing' => $outing
         ]);
@@ -34,7 +34,7 @@ class UserController extends AbstractController
      */
     public function ezezdS(User $user, Request $request): Response
     {
-        return $this->render('user/afficherProfil.html.twig', [
+        return $this->render('user/displayProfil.html.twig', [
             'user' => $user,
         ]);
     }
