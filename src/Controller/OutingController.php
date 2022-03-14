@@ -10,6 +10,8 @@ use App\Form\Model\SearchOuting;
 use App\Form\OutingFormType;
 use App\Form\SearchFormType;
 use App\Repository\OutingRepository;
+use App\Repository\PlaceRepository;
+use App\Repository\UserRepository;
 use App\Service\UpdateState;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -151,33 +153,57 @@ class OutingController extends AbstractController
         ]);
     }
 
-//    /**
-//     * @Route ("/new-outing/", name="outing_new")
-//     */
-//    public function new(Request $req, EntityManagerInterface $em): Response
-//    {
-//        $outing = new Outing();
-//        dd($em->getRepository(Campus::class)->find(34)->getName());
-//        $form = $this->createForm(OutingFormType::class);
-//        $form->handleRequest($req);
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $newOuting = $form->getData();
-//            $newOuting->setOrganizer($this->getUser());
-//            $newOuting->setCampus($this->getUser()->getCampus());
-//            if ($form->getClickedButton()->getConfig()->getName() == 'create') {
-//                $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Créée']));
-//            } else {
-//                $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
-//            };
-//
-//            $em->persist($newOuting);
-//            $em->flush();
-//            return $this->redirectToRoute('app_outing');
-//        }
-//
-//        return $this->render('outing/new.html.twig', [
-//            'form' => $form->createView(),
-//        ]);
-//    }
+    /**
+     * @Route ("/new-outing/", name="outing_new")
+     */
+    public function new(Request $req, EntityManagerInterface $em): Response
+    {
+        $outing = new Outing();
+        dd($em->getRepository(Campus::class)->find(34)->getName());
+        $form = $this->createForm(OutingFormType::class);
+        $form->handleRequest($req);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $newOuting = $form->getData();
+            $newOuting->setOrganizer($this->getUser());
+            $newOuting->setCampus($this->getUser()->getCampus());
+            if ($form->getClickedButton()->getConfig()->getName() == 'create') {
+                $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Créée']));
+            } else {
+                $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
+            };
 
+            $em->persist($newOuting);
+            $em->flush();
+            return $this->redirectToRoute('app_outing');
+        }
+
+        return $this->render('outing/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route ("/consult-outing/{id}", name="consult_outing",  requirements={"id"="\d+"})
+     */
+
+    public  function consult(Request  $req, OutingRepository $o, PlaceRepository $p, UserRepository $u) : Response
+    {
+        $today = new \DateTime('now');
+        $OneMonthAgo = $today->sub(new \DateInterval('P1M'));
+        $idOuting= $req->get('id');
+        $outing = $o->find($idOuting);
+        if ($outing->getStartDate()<$OneMonthAgo){
+            $this->addFlash('danger', 'la sortie a expirée');
+            return $this->redirectToRoute('default_home');
+        }
+        $lieu = $p->find($idOuting);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $this->render('outing/consultOuting.html.twig', [
+            'outing' => $outing,
+            'place' => $p,
+            'user' => $user
+        ]);
+    }
 }
