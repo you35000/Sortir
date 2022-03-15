@@ -14,23 +14,23 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-floating mb-3">
-                        <input v-model="newPlace.name" type="text" class="form-control" id="name" placeholder="Nom du lieu">
+                        <input v-model="newPlace.name" type="text" class="form-control" id="name" placeholder="Nom du lieu" required>
                         <label for="name">Nom du lieu</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select v-model="newPlace.city" id="city" class="form-select" v-model="selectedCity" @change="filter(selectedCity)">
+                        <select v-model="newPlace.city" id="city" class="form-select" v-model="selectedCity" @change="filter(selectedCity)" required>
                             <option v-for="city in cities" v-bind:value="city">{{ city.name }}</option>
                         </select>
                         <label for="city">Ville</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input v-model="newPlace.street" type="text" class="form-control" id="street" placeholder="Rue">
+                        <input v-model="newPlace.street" type="text" class="form-control" id="street" placeholder="Rue" required>
                         <label for="name">Rue</label>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" @click="postPlace()">Enregistrer</button>
+                    <button type="button" class="btn btn-primary" @click="postPlace()" data-bs-dismiss="modal">Enregistrer</button>
                 </div>
             </div>
         </div>

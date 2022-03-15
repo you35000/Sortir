@@ -39,6 +39,7 @@ const app = new Vue({
         },
         postPlace() {
             console.log(this.newPlace);
+            axios.post(urlPlaces, this.newPlace).then(res => this.allPlaces.push(res.data));
         }
     },
 });
