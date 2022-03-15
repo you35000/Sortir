@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
 
 class UserFormType extends AbstractType
 {
@@ -51,6 +52,7 @@ class UserFormType extends AbstractType
                 'mapped' => false,
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'required' => false,
+                'constraints'=> new Length(['min' => 6,'minMessage'=>'le mot de passe doit contenir au moins 6 caractères']),
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmation'],
             ])

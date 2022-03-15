@@ -41,8 +41,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length (
-     *     min="6",
+     * @Assert\Length(
+     *     min=6,
      *     minMessage="Mot de passe trop court")
      */
     private $password;
@@ -51,7 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=50)
      * @Assert\Length(
      *     max=50,
-     *     maxMessage="Votre prénom ne peut contenir au maximum {{max}} caractères")
+     *     maxMessage="Votre prénom ne peut contenir au maximum 50 caractères")
      * @Assert\Regex(
      *     pattern="/^[a-z ,.'-]+$/i",
      *     message="Prénom incorrect")
@@ -62,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=50)
      * @Assert\Length(
      *     max=50,
-     *     maxMessage="Votre nom ne peut contenir au maximum {{max}} caractères")
+     *     maxMessage="Votre nom ne peut contenir au maximum 50 caractères")
      * @Assert\Regex(
      *     pattern="/^[a-z ,.'-]+$/i",
      *     message="Nom incorrect")
