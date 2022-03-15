@@ -15,11 +15,12 @@ const app = new Vue({
         selectedPlace: null,
         selectedPlaces: null,
         selectedCity: null,
+        placeId: 1,
     },
     mounted,
     methods: {
         log(place) {
-            this.selectedPlace = place;
+            this.placeId = place.id;
             console.log(place);
         },
         filter(city) {

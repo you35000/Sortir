@@ -52,7 +52,7 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 5; $i++) {
 
             $city = new City();
             $city->setName($this->faker->city)
@@ -77,7 +77,9 @@ class AppFixtures extends Fixture
             $place = new Place();
             $place->setName($faker->randomElement($places))
                 ->setStreet($faker->streetAddress)
-                ->setCity($faker->randomElement($cities));
+                ->setCity($faker->randomElement($cities))
+                ->setLongitude($this->faker->longitude)
+                ->setLatitude($this->faker->latitude);
 
             $this->manager->persist($place);
         }

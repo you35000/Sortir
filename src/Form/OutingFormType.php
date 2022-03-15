@@ -11,6 +11,7 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -29,7 +30,6 @@ class OutingFormType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Nom de la sortie',
                 'trim' => true,
-                'required' => true,
                 'attr' => ['placeholder' => 'Nom de votre sortie'],
             ])
             ->add('startDate', DateTimeType::class, [
@@ -37,7 +37,7 @@ class OutingFormType extends AbstractType
                 'widget' => 'single_text',
                 'data' => (new \DateTime())->modify('+1 day'),
             ])
-            ->add('limitDate', DateTimeType::class, [
+            ->add('limitDate', DateType::class, [
                 'label' => 'Date limite inscription',
                 'widget' => 'single_text',
                 'data' => (new \DateTime())->modify('+20 hours'),
@@ -46,44 +46,46 @@ class OutingFormType extends AbstractType
                 'label' => 'Nombre de places',
                 'trim' => true,
                 'required' => true,
-                'attr' => ['min' => 0, 'placeholder' => 'Nombre de places'],
+                'attr' => ['placeholder' => 'Nombre de places'],
             ])
             ->add('duration', IntegerType::class, [
                 'label' => 'Durée (min): ',
                 'trim' => true,
                 'required' => true,
-                'attr' => ['min' => 0, 'placeholder' => 'Durée en minutes'],
+                'attr' => ['placeholder' => 'Durée en minutes'],
             ])
             ->add('outingInfo', TextareaType::class, [
                 'label' => 'Description et infos',
-                'required' => true,
                 'attr' => ['placeholder' => 'Description et infos'],
             ])
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
                 'label' => 'Campus : ',
                 'choice_label' => 'name'
-
             ])
-            ->add('place', EntityType::class, [
-                'class' => Place::class,
-                'required' => true,
-                'label' => 'Lieu :',
-                'placeholder' => 'Choisissez un lieu',
-                'choice_label' => 'name',
+//            ->add('place', EntityType::class, [
+//                'class' => Place::class,
+//                'required' => true,
+//                'label' => 'Lieu :',
+//                'placeholder' => 'Choisissez un lieu',
+//                'choice_label' => 'name',
+//            ])
+            ->add('place', null, [
+                'mapped' => false,
+                'attr' => ['type' => 'hidden']
             ]);
 
         $builder->add('create', SubmitType::class, [
             'label' => 'Créer',
             'attr' => array(
-                'class' => 'btn btn-outline-secondary',
+                'class' => 'btn btn-outline-success',
             )
         ]);
 
         $builder->add('published', SubmitType::class, [
             'label' => 'Publier',
             'attr' => array(
-                'class' => 'btn btn-outline-secondary',
+                'class' => 'btn btn-outline-primary mx-5',
             )
         ]);
 

@@ -165,14 +165,16 @@ class OutingController extends AbstractController
     /**
      * @Route ("/new-outing/", name="outing_new")
      */
-    public function new(Request $req, EntityManagerInterface $em): Response
+    public function new(Request $req, EntityManagerInterface $em, PlaceRepository $repo): Response
     {
 
         $form = $this->createForm(OutingFormType::class);
         $form->handleRequest($req);
-       
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $newOuting = $form->getData();
+            $newOuting->setPlace($repo->find($req->request->get('outing_form')['place']));
             $newOuting->setOrganizer($this->getUser());
             $newOuting->setCampus($this->getUser()->getCampus());
             if ($form->getClickedButton()->getConfig()->getName() == 'create') {

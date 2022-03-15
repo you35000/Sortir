@@ -24,7 +24,10 @@ class Outing
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(message="Le nom de la sortie ne peut être nulle")
-     *
+     * @Assert\Length(max="50", maxMessage="Le nom de la sortie ne peut contenir plus de 50 caractères")
+     * @Assert\Regex(
+     *     pattern="/^[a-zA-Z\s]*$/",
+     *     message="Le nom de la sortie ne peut contenir seulement des lettres")
      */
     private $name;
 
@@ -32,7 +35,7 @@ class Outing
      * @ORM\Column(type="datetime")
      * @Assert\Expression(
      *     "this.getStartDate() > this.getNow()",
-     *      message="La date doit être supérieur à aujourd\'hui")
+     *      message="La date doit être postérieur à aujourd'hui")
      */
     private $startDate;
 
@@ -41,15 +44,14 @@ class Outing
      * @ORM\Column(type="datetime")
      * @Assert\Expression(
      *     "this.getLimitDate() < this.getStartDate()",
-     *     message="La date de limite d'inscription doit être antérieur à la date de début de sortie"
+     *     message="La date doit être antérieur à la date de début de sortie"
      * )
      */
     private $limitDate;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank
-     * @Assert\Range(min="2",max="150",notInRangeMessage="Le nombre max de place doit être compris entre {{min}} et {{max}}")
+     * @Assert\Range(min="2",max="150",notInRangeMessage="Le nombre max de place doit être compris entre 2 et 150")
      */
     private $nbInscription;
 
@@ -66,21 +68,20 @@ class Outing
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="organizedOutings")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
      */
     private $organizer;
 
     /**
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="outings")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
+     *
      */
     private $campus;
 
     /**
      * @ORM\ManyToOne(targetEntity=Place::class, inversedBy="outings")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
+     *
      */
     private $Place;
 
@@ -92,7 +93,8 @@ class Outing
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Veuillez insérer une durée")
+     * @Assert\Positive(message="La durée doit être positive")
      */
     private $duration;
 
