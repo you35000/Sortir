@@ -94,7 +94,7 @@
                 </div>
                 <div class="col-5">
                     <div class="form-floating mb-3">
-                        <select id="place" class="form-select" v-model="selectedPlace" @change="log(selectedPlace)" required>
+                        <select id="place" class="form-select" v-model="selectedPlace" @change="log(selectedPlace)">
                             <option
                                 v-for="place in selectedPlaces"
                                 v-bind:value="place"
@@ -175,10 +175,10 @@
                     {{ form_errors(form) }}
                 </div>
                 <div class="text-center d-flex justify-content-center my-3">
-
-                    {{ form_row(form.create) }}
-                    {{ form_row(form.published) }}
-                    <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary mb-3">Annuler</a>
+                    <button name="update" class="btn btn-outline-warning" value="true">Modifier</button>
+                    <button name="published" class="btn btn-outline-primary mx-5" value="true">Publier</button>
+                    <button name="delete" class="btn btn-outline-danger mx-5" value="true">Supprimer</button>
+                    <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary">Annuler</a>
                 </div>
             </div>
             {{ form_end(form) }}

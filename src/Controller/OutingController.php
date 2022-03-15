@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use const Grpc\STATUS_ABORTED;
 
 /**
  * @Route("/internal")
@@ -155,17 +156,31 @@ class OutingController extends AbstractController
      */
     public function update(Outing $outing, EntityManagerInterface $em, Request $req): Response
     {
-        $form = $this->createForm(OutingFormType::class, $outing);
-        $form->handleRequest($req);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($outing->getOrganizer() === $this->getUser() && $outing->getState()->getLibelle() == 'Créée') {
+            $form = $this->createForm(OutingFormType::class, $outing);
+            $form->handleRequest($req);
+            if ($form->isSubmitted() && $form->isValid()) {
+                if ($req->request->get('update') && $outing->getState()->getLibelle() == 'Créée' && $outing->getOrganizer() === $this->getUser()) {
+                    $em->persist($outing);
+                    $em->flush();
+                }
+                if ($req->request->get('delete') && $outing->getState()->getLibelle() == 'Créée' && $outing->getOrganizer() === $this->getUser()) {
+                    $em->remove($outing);
+                    $em->flush();
+                }
+                if ($req->request->get('published') && $outing->getState()->getLibelle() == 'Créée' && $outing->getOrganizer() === $this->getUser()) {
+                    $outing->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
+                    $em->persist($outing);
+                    $em->flush();
+                }
+                return $this->redirectToRoute('app_outing');
+            }
 
-        }
-
-        if ($outing->getOrganizer() === $this->getUser()) {
             return $this->render('outing/update.html.twig', [
                 'form' => $form->createView(),
                 'outing' => $outing,
             ]);
+
         } else {
             return $this->redirectToRoute('app_outing');
         }
@@ -189,10 +204,10 @@ class OutingController extends AbstractController
             $newOuting->setCampus($this->getUser()->getCampus());
             if ($req->request->get('creer')) {
                 $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Créée']));
-                dump('créer');
+
             } elseif ($req->request->get('published')) {
                 $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
-                dump('publier');
+                
             };
             $newOuting->addAttendee($this->getUser());
 
