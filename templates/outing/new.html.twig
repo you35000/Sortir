@@ -3,49 +3,60 @@
 {% block title %}Nouvelle sortie{% endblock %}
 
 {% block main %}
-    <div class="col-8 offset-2">
-        <h2>Créer votre sortie</h2>
-        {{ form_start(form) }}
-        <div class="row mt-5">
-            <div class="col-6">
-                <div class="form-floating mb-3">
-                    {{ form_widget(form.name) }}
-                    <label for="name">{{ form_label(form.name) }}</label>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        {{ form_row(form.startDate) }}
-                    </div>
-                    <div class="col-6">
-                        {{ form_row(form.limitDate ) }}
-                    </div>
-                    <div class="col-6">
-                        <div class="form-floating mb-3">
-                            {{ form_widget(form.nbInscription) }}
-                            <label for="name">{{ form_label(form.nbInscription) }}</label>
+    <section class="container-fluid training">
+        <div class="container">
+
+             {#    <div class="col-8 offset-2"> #}
+            <h2 id="training">Créer votre sortie</h2>
+            <hr class="separator">
+            {{ form_start(form) }}
+            <div class="row mt-5">
+{#               <section class="col-md-12 col-lg-12  col-xs-12 col-sm-12">#}
+                <section class="col-md-6 col-lg-6  col-xs-12 col-sm-12 item-training">
+{#                    <div class="col-6">#}
+                        <div class="col-6">
+                            <label for="name">{{ form_label(form.name) }}</label>
+                            {{ form_widget(form.name) }}
                         </div>
-                    </div>
-                    <div class="col-6">
+{#                        <div class="row">#}
+                            <div class="col-6">
+                                {{ form_row(form.startDate) }}
+                            </div>
+                            <div class="col-6">
+                                {{ form_row(form.limitDate ) }}
+                            </div>
+                            <div class="col-6">
+{#                                <div class="form-floating mb-3">#}
+                                <label for="name">{{ form_label(form.nbInscription) }}</label>
+                                    {{ form_widget(form.nbInscription) }}
+{#                                </div>#}
+                            </div>
+                            <div class="col-6">
+{#                                <div class="form-floating mb-3">#}
+                                <label for="name">{{ form_label(form.duration) }}</label>
+                                    {{ form_widget(form.duration) }}
+{#                                </div>#}
+                            </div>
+                            <div class="col-6">
+{#                                <div class="form-floating mb-3">#}
+                                <label for="name">{{ form_label(form.outingInfo) }}</label>
+                                    {{ form_widget(form.outingInfo,{'attr':{'style':'height:150px'}}) }}
+{#                                </div>#}
+                            </div>
+                    <br>
+{#                        </div>#}
+{#                    </div>#}
+                </section>
+
+{#            <h3 class="col-md-12 col-lg-12  col-xs-12 col-sm-12">****</h3>#}
+                <section class="col-md-6 col-lg-6  col-xs-12 col-sm-12 item-training">
+                    <div id="app" class="col-6">
                         <div class="form-floating mb-3">
-                            {{ form_widget(form.duration) }}
-                            <label for="name">{{ form_label(form.duration) }}</label>
+{#                            <label for="name">{{ form_label(form.campus) }}</label>#}
+                            {{ form_widget(form.campus) }}
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-floating mb-3">
-                            {{ form_widget(form.outingInfo,{'attr':{'style':'height:150px'}}) }}
-                            <label for="name">{{ form_label(form.outingInfo) }}</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="app" class="col-6">
-                <div class="form-floating mb-3">
-                    {{ form_widget(form.campus) }}
-                    <label for="name">{{ form_label(form.campus) }}</label>
-                </div>
-                <div class="row">
-                    {% verbatim %}
+                        <div class="row">
+                            {% verbatim %}
                 <div class="col-6">
                     <div class="form-floating mb-3">
                         <select id="city" class="form-select" v-model="selectedCity" @change="filter(selectedCity)">
@@ -55,13 +66,13 @@
                     </div>
                 </div>
                 {% endverbatim %}
-                    <div class="col-6">
-                        <div class="form-floating mb-3">
-                            {{ form_widget(form.place, {'attr':{'v-model':'selectedPlace', '@change':'log(selectedPlace)'}}) }}
-                            <label for="name">{{ form_label(form.place) }}</label>
-                        </div>
-                    </div>
-                    {% verbatim %}
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.place, {'attr':{'v-model':'selectedPlace', '@change':'log(selectedPlace)'}}) }}
+                                    <label for="name">{{ form_label(form.place) }}</label>
+                                </div>
+                            </div>
+                            {% verbatim %}
                 <div class="col-12">
                 <div class="card" v-if="selectedPlace">
                     <div class="card-body">
@@ -113,16 +124,21 @@
                 </div>
                 {% endverbatim %}
 
+                        </div>
+                    </div>
+                </section>
+                <br>
+                <div class="text-center d-flex justify-content-center">
+                    {{ form_row(form.create,{ 'attr': {'class': 'btn btn-primary'} }) }}
+                    {{ form_row(form.published,{ 'attr': {'class': 'btn btn-success mx-5'} }) }}
+                    <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary mb-3">Annuler</a>
                 </div>
-            </div>
-            <div class="text-center d-flex justify-content-center">
-                {{ form_row(form.create,{ 'attr': {'class': 'btn btn-primary'} }) }}
-                {{ form_row(form.published,{ 'attr': {'class': 'btn btn-success mx-5'} }) }}
-                <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary mb-3">Annuler</a>
+{#            </div>#}
+            {{ form_end(form) }}
+{#                </section>#}
             </div>
         </div>
-        {{ form_end(form) }}
-    </div>
+    </section>
 {% endblock %}
 {% block javascript %}
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

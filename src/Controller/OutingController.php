@@ -170,11 +170,12 @@ class OutingController extends AbstractController
 
         $form = $this->createForm(OutingFormType::class);
         $form->handleRequest($req);
-       
+
         if ($form->isSubmitted() && $form->isValid()) {
             $newOuting = $form->getData();
             $newOuting->setOrganizer($this->getUser());
             $newOuting->setCampus($this->getUser()->getCampus());
+        
             if ($form->getClickedButton()->getConfig()->getName() == 'create') {
                 $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Créée']));
             } else {

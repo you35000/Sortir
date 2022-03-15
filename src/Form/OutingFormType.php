@@ -37,7 +37,7 @@ class OutingFormType extends AbstractType
                 'widget' => 'single_text',
                 'data' => (new \DateTime())->modify('+1 day'),
             ])
-            ->add('limitDate', DateTimeType::class, [
+            ->add('limitDate', DateType::class, [
                 'label' => 'Date limite inscription',
                 'widget' => 'single_text',
                 'data' => (new \DateTime())->modify('+20 hours'),
