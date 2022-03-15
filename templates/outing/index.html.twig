@@ -4,10 +4,7 @@
 
 {% block main %}
     <div class="row">
-        <div>
-            <p>Créer une nouvelle sortie <a href="{{ path('outing_new') }}" class="btn btn-success"><i
-                            class="fa fa-plus"></i></a></p>
-        </div>
+
         <div class="col-3 my-5 bg-dark text-light p-4">
 
             {{ form_start(form) }}
@@ -36,7 +33,10 @@
             </div>
             {{ form_end(form) }}
         </div>
+
+
         <div class="col-9 my-5 px-5 ">
+
             <table class="table table-hover table-light table-striped">
                 <thead class="table-dark">
                 <tr>
@@ -139,6 +139,10 @@
                 {% endfor %}
                 </tbody>
             </table>
+            <div>
+                <p>Créer une nouvelle sortie <a href="{{ path('outing_new') }}" class="btn btn-success"><i
+                                class="fa fa-plus"></i></a></p>
+            </div>
         </div>
     </div>
 {% endblock %}
