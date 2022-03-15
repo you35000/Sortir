@@ -66,9 +66,9 @@ class UserFormType extends AbstractType
                     new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
-                            'application/png',
-                            'application/jpg',
-                            'application/jpeg',
+                            'image/png',
+                            'image/jpg',
+                            'image/jpeg',
                         ],
                         'mimeTypesMessage' => 'L\'extension de cette image est incorrect',
                         'maxSizeMessage' => 'L\'image est trop volumineuse, veuillez sélectionner une autre image'
