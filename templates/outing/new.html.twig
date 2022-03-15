@@ -14,31 +14,23 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="name" placeholder="Nom du lieu">
+                        <input v-model="newPlace.name" type="text" class="form-control" id="name" placeholder="Nom du lieu">
                         <label for="name">Nom du lieu</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select id="city" class="form-select" v-model="selectedCity" @change="filter(selectedCity)">
+                        <select v-model="newPlace.city" id="city" class="form-select" v-model="selectedCity" @change="filter(selectedCity)">
                             <option v-for="city in cities" v-bind:value="city">{{ city.name }}</option>
                         </select>
                         <label for="city">Ville</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="street" placeholder="Rue">
+                        <input v-model="newPlace.street" type="text" class="form-control" id="street" placeholder="Rue">
                         <label for="name">Rue</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="longitude" placeholder="Longitude">
-                        <label for="name">Longitude</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="latitude" placeholder="Latitude">
-                        <label for="name">Latitude</label>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary">Enregistrer</button>
+                    <button type="button" class="btn btn-primary" @click="postPlace()">Enregistrer</button>
                 </div>
             </div>
         </div>

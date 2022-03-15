@@ -16,6 +16,13 @@ const app = new Vue({
         selectedPlaces: null,
         selectedCity: null,
         placeId: 1,
+        newPlace: {
+            name: null,
+            street: null,
+            latitude: null,
+            longitude: null,
+            city: null
+        }
     },
     mounted,
     methods: {
@@ -30,5 +37,8 @@ const app = new Vue({
                 }
             });
         },
+        postPlace() {
+            console.log(this.newPlace);
+        }
     },
 });
