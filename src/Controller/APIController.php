@@ -37,11 +37,11 @@ class APIController extends AbstractController
     }
 
     /**
-     * @Route("/testApi", name="test_api")
+     * @Route("/places/{id}", name="place_get", methods={"GET"})
      */
-    public function index(): Response
+    public function getOnePlace(Place $place): Response
     {
-        return $this->render('api/index.html.twig');
+        return $this->json($place);
     }
 
     /**

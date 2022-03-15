@@ -153,13 +153,23 @@ class OutingController extends AbstractController
     /**
      * @Route ("/update-outing/{id}", name="outing_update")
      */
-    public function update(Outing $outing, EntityManagerInterface $em): Response
+    public function update(Outing $outing, EntityManagerInterface $em, Request $req): Response
     {
         $form = $this->createForm(OutingFormType::class, $outing);
-        return $this->render('outing/update.html.twig', [
-            'form' => $form->createView(),
-            'outing' => $outing,
-        ]);
+        $form->handleRequest($req);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        }
+
+        if ($outing->getOrganizer() === $this->getUser()) {
+            return $this->render('outing/update.html.twig', [
+                'form' => $form->createView(),
+                'outing' => $outing,
+            ]);
+        } else {
+            return $this->redirectToRoute('app_outing');
+        }
+
     }
 
     /**
@@ -177,10 +187,12 @@ class OutingController extends AbstractController
             $newOuting->setPlace($repo->find($req->request->get('outing_form')['place']));
             $newOuting->setOrganizer($this->getUser());
             $newOuting->setCampus($this->getUser()->getCampus());
-            if ($form->getClickedButton()->getConfig()->getName() == 'create') {
+            if ($req->request->get('creer')) {
                 $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Créée']));
-            } else {
+                dump('créer');
+            } elseif ($req->request->get('published')) {
                 $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
+                dump('publier');
             };
             $newOuting->addAttendee($this->getUser());
 

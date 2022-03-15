@@ -75,19 +75,19 @@ class OutingFormType extends AbstractType
                 'attr' => ['type' => 'hidden']
             ]);
 
-        $builder->add('create', SubmitType::class, [
-            'label' => 'Créer',
-            'attr' => array(
-                'class' => 'btn btn-outline-success',
-            )
-        ]);
-
-        $builder->add('published', SubmitType::class, [
-            'label' => 'Publier',
-            'attr' => array(
-                'class' => 'btn btn-outline-primary mx-5',
-            )
-        ]);
+//        $builder->add('create', SubmitType::class, [
+//            'label' => 'Créer',
+//            'attr' => array(
+//                'class' => 'btn btn-outline-success',
+//            )
+//        ]);
+//
+//        $builder->add('published', SubmitType::class, [
+//            'label' => 'Publier',
+//            'attr' => array(
+//                'class' => 'btn btn-outline-primary mx-5',
+//            )
+//        ]);
 
     }
 

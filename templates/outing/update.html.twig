@@ -1,52 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvelle sortie{% endblock %}
+{% block title %}Modifier la sortie{% endblock %}
 
 {% block main %}
-    <div class="col-8 offset-2">
-        <h2>Créer votre sortie</h2>
-        {{ form_start(form) }}
-        <div class="row mt-5">
-            <div class="col-6">
-                <div class="form-floating mb-3">
-                    {{ form_widget(form.name) }}
-                    <label for="name">{{ form_label(form.name) }}</label>
+    <div id="app">
+        <div id="idPlace" class="d-none">{{ outing.place.id }}</div>
+        {% verbatim %}
+    <div class="modal fade" id="newPlace" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" @click="test()">Ajouter un lieu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="row">
-                    <div class="col-6">
-                        {{ form_row(form.startDate) }}
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input v-model="newPlace.name" type="text" class="form-control" id="name" placeholder="Nom du lieu" required>
+                        <label for="name">Nom du lieu</label>
                     </div>
-                    <div class="col-6">
-                        {{ form_row(form.limitDate ) }}
+                    <div class="form-floating mb-3">
+                        <select v-model="newPlace.city" id="city" class="form-select" v-model="selectedCity" @change="filter(selectedCity)" required>
+                            <option v-for="city in cities" v-bind:value="city">{{ city.name }}</option>
+                        </select>
+                        <label for="city">Ville</label>
                     </div>
-                    <div class="col-6">
-                        <div class="form-floating mb-3">
-                            {{ form_widget(form.nbInscription) }}
-                            <label for="name">{{ form_label(form.nbInscription) }}</label>
-                        </div>
+                    <div class="form-floating mb-3">
+                        <input v-model="newPlace.street" type="text" class="form-control" id="street" placeholder="Rue" required>
+                        <label for="name">Rue</label>
                     </div>
-                    <div class="col-6">
-                        <div class="form-floating mb-3">
-                            {{ form_widget(form.duration) }}
-                            <label for="name">{{ form_label(form.duration) }}</label>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-floating mb-3">
-                            {{ form_widget(form.outingInfo,{'attr':{'style':'height:150px'}}) }}
-                            <label for="name">{{ form_label(form.outingInfo) }}</label>
-                        </div>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" @click="postPlace()" data-bs-dismiss="modal">Enregistrer</button>
                 </div>
             </div>
-            <div id="app" class="col-6">
-                <div class="form-floating mb-3">
-                    {{ form_widget(form.campus) }}
-                    <label for="name">{{ form_label(form.campus) }}</label>
-                </div>
-                <div class="row">
-                    {% verbatim %}
+        </div>
+    </div>
+     {% endverbatim %}
+        <div class="col-8 offset-2">
+            <h2>Modifier votre sortie</h2>
+            {{ form_start(form) }}
+            <div class="row mt-5">
                 <div class="col-6">
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.name) }}
+                        <label for="name">{{ form_label(form.name) }}</label>
+                        {{ form_errors(form.name) }}
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ form_row(form.startDate) }}
+                        </div>
+                        <div class="col-6">
+                            {{ form_row(form.limitDate ) }}
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.nbInscription) }}
+                                <label for="name">{{ form_label(form.nbInscription) }}</label>
+                                {{ form_errors(form.nbInscription) }}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.duration) }}
+                                <label for="name">{{ form_label(form.duration) }}</label>
+                                {{ form_errors(form.duration) }}
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.outingInfo,{'attr':{'style':'height:150px'}}) }}
+                                <label for="name">{{ form_label(form.outingInfo) }}</label>
+                                {{ form_errors(form.outingInfo) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-floating mb-3">
+                        {{ form_widget(form.campus) }}
+                        <label for="name">{{ form_label(form.campus) }}</label>
+                    </div>
+                    <div class="row">
+                        {% verbatim %}
+                <div class="col-5">
                     <div class="form-floating mb-3">
                         <select id="city" class="form-select" v-model="selectedCity" @change="filter(selectedCity)">
                             <option v-for="city in cities" v-bind:value="city">{{city.name}}</option>
@@ -54,56 +92,74 @@
                         <label for="city">Ville</label>
                     </div>
                 </div>
-                {% endverbatim %}
-                    <div class="col-6">
-                        <div class="form-floating mb-3">
-                            {{ form_widget(form.place, {'attr':{'v-model':'selectedPlace', '@change':'log(selectedPlace)'}}) }}
-                            <label for="name">{{ form_label(form.place) }}</label>
-                        </div>
+                <div class="col-5">
+                    <div class="form-floating mb-3">
+                        <select id="place" class="form-select" v-model="selectedPlace" @change="log(selectedPlace)" required>
+                            <option
+                                v-for="place in selectedPlaces"
+                                v-bind:value="place"
+                                v-attr:selected="place.id == placeId"
+                                >{{place.name}}</option>
+                        </select>
+                        <label for="place">Lieu</label>
                     </div>
-                    {% verbatim %}
+                </div>
+                <div class="col-2 pt-2">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newPlace"><i class="fa fa-plus"></i></button>
+                </div>
+               <div v-if="placeId">
+                {% endverbatim %}
+
+                        <div class="col-6 d-none">
+                            <div class="form-floating mb-3">
+                                {{ form_widget(form.place, {'attr':{'v-model':'selectedPlace.id'}}) }}
+                                <label for="name">{{ form_label(form.place) }}</label>
+                            </div>
+                        </div>
+                        {% verbatim %}
+                </div>
                 <div class="col-12">
                 <div class="card" v-if="selectedPlace">
                     <div class="card-body">
-                        <h5 class="card-title text-center">Localisation</h5>
+                        <h5 class="card-title text-center">Localisation : {{selectedPlace.name}}</h5>
                     </div>
                     <ul class="list-group list-group-flush px-5 py-1">
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     Rue :
                                 </div>
-                                <div class="col-6">
+                                <div class="col-8">
                                     {{selectedPlace.street}}
                                 </div>
                             </div>
                         </li>
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     Code Postal :
                                 </div>
-                                <div class="col-6">
-<!--                                    {{selectedPlace.city.postCode}}-->
+                                <div class="col-8">
+                                    {{selectedPlace.city.postCode}}
                                 </div>
                             </div>
                         </li>
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     Longitude :
                                 </div>
-                                <div class="col-6">
+                                <div class="col-8">
                                     {{selectedPlace.longitude}}
                                 </div>
                             </div>
                         </li>
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     Latitude :
                                 </div>
-                                <div class="col-6">
+                                <div class="col-8">
                                     {{selectedPlace.latitude}}
                                 </div>
                             </div>
@@ -113,15 +169,20 @@
                 </div>
                 {% endverbatim %}
 
+                    </div>
+                </div>
+                <div class="form-error">
+                    {{ form_errors(form) }}
+                </div>
+                <div class="text-center d-flex justify-content-center my-3">
+
+                    {{ form_row(form.create) }}
+                    {{ form_row(form.published) }}
+                    <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary mb-3">Annuler</a>
                 </div>
             </div>
-            <div class="text-center d-flex justify-content-center">
-                {{ form_row(form.create,{ 'attr': {'class': 'btn btn-primary'} }) }}
-                {{ form_row(form.published,{ 'attr': {'class': 'btn btn-success mx-5'} }) }}
-                <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary mb-3">Annuler</a>
-            </div>
+            {{ form_end(form) }}
         </div>
-        {{ form_end(form) }}
     </div>
 {% endblock %}
 {% block javascript %}

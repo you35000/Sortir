@@ -116,7 +116,7 @@
                 <div class="col-12">
                 <div class="card" v-if="selectedPlace">
                     <div class="card-body">
-                        <h5 class="card-title text-center">Localisation</h5>
+                        <h5 class="card-title text-center">Localisation : {{selectedPlace.name}}</h5>
                     </div>
                     <ul class="list-group list-group-flush px-5 py-1">
                         <li class="list-group-item">
@@ -170,9 +170,9 @@
                     {{ form_errors(form) }}
                 </div>
                 <div class="text-center d-flex justify-content-center my-3">
-                    {{ form_row(form.create) }}
-                    {{ form_row(form.published) }}
-                    <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary mb-3">Annuler</a>
+                    <button name="creer" class="btn btn-outline-success" value="true">Créer</button>
+                    <button name="published" class="btn btn-outline-primary mx-5" value="true">Publier</button>
+                    <a href="{{ path('app_outing') }}" class="btn btn-outline-secondary">Annuler</a>
                 </div>
             </div>
             {{ form_end(form) }}
