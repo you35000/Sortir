@@ -4,11 +4,24 @@
 
 {% block main %}
     <div class="row">
-        <div class="col-6 {% if outing.attendees.count == 0 %}offset-3{% else %}offset-2{% endif %}">
+        <div class="col-8 {% if outing.attendees.count == 0 %}offset-2{% endif %}">
             <div class="card border-dark">
                 <div class="card-header d-flex justify-content-between">
                     <h5>Campus : {{ outing.campus.name }}</h5>
-                    <h6>Organisé par : {{ outing.organizer.pseudo }}</h6>
+                    <h6>Organisé par : {{ outing.organizer.pseudo }}<span class="ms-3 badge
+                                {% if outing.state.libelle == 'Annulée' %}
+                                    bg-danger
+                                {% elseif outing.state.libelle == 'Ouverte' %}
+                                    bg-primary
+                                {% elseif outing.state.libelle == 'Clôturée' %}
+                                    bg-warning
+                                {% elseif outing.state.libelle == 'Créée' %}
+                                    bg-secondary
+                                {% elseif outing.state.libelle == 'Activité en cours' %}
+                                    bg-success
+                                {% elseif outing.state.libelle == ('Passée' or 'Historisée') %}
+                                    bg-dark text-light
+                                {% endif %}">{{ outing.state.libelle }}</span></h6>
                 </div>
                 <div class="card-body">
                     <h5 class="text-center card-title display-2">{{ outing.name }}</h5>

@@ -51,7 +51,7 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route("/outing_details/{id}", name="outing_details")
+     * @Route("/outing-details/{id}", name="outing_details")
      */
     public function details(Outing $outing, EntityManagerInterface $mgr)
     {
@@ -207,7 +207,7 @@ class OutingController extends AbstractController
 
             } elseif ($req->request->get('published')) {
                 $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
-                
+
             };
             $newOuting->addAttendee($this->getUser());
 
