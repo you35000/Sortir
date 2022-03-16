@@ -3,6 +3,31 @@
 {% block title %}Hello OutingController!{% endblock %}
 
 {% block main %}
+    {#    {% include 'Modules/alert.html.twig' %} #}
+    {% for message in app.flashes('success') %}
+        <div class="position-fixed p-3" style="z-index: 1000; top: 80px;right: 50px">
+            <div class="alert alert-success">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('warning') %}
+        <div class="position-fixed p-3" style="z-index: 1000; top: 80px;right: 50px">
+            <div class="alert alert-warning">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="position-fixed p-3" style="z-index: 1000; top: 80px;right: 50px">
+            <div class="alert alert-danger">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    {% endfor %}
     <div class="row ">
 
         <div class="col-3 my-5 bg-dark text-light p-4">
@@ -37,7 +62,7 @@
 
         <div class="col-9 my-5">
 
-            <table class="table table-hover table-light table-striped">
+            <table class="text-center table table-hover table-light table-striped align-middle">
                 <thead class="table-dark">
                 <tr>
                     <th>Nom de la sortie</th>
@@ -84,8 +109,7 @@
                                     bg-dark text-light
                                 {% endif %}">{{ o.state.libelle }}</span></td>
                             <td>
-                                {% if app.user in o.attendees %}Inscrit {% endif %}
-                                {% if not app.user in o.attendees %}Non Inscrit {% endif %}
+                                {% if app.user in o.attendees %}<i class="fa fa-user-check"></i> {% endif %}
                             </td>
                             <td>
                                 <a href="{{ path('display_organizer',{'id':o.organizer.id}) }}">{{ o.organizer.pseudo }}</a>
@@ -93,42 +117,42 @@
                             <td>
                                 {# Publication de la sortie si elle est créée et que l'utilisateur connecté est bien l'organisateur #}
                                 {% if (o.organizer == app.user) and (o.state.libelle == 'Créée') %}
-                                    <a href="{{ path('outing_published',{'id':o.id}) }}" class="btn btn-success"
+                                    <a href="{{ path('outing_published',{'id':o.id}) }}" class="btn btn-hover color-5"
                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Publier">
                                         <i class="fa fa-bullhorn"></i>
                                     </a>
                                 {% endif %}
                                 {# Si l'utilisateur est inscrit, il peut se désister avant le début de l'activité #}
                                 {% if (app.user in o.attendees) and ((o.state.libelle == 'Ouverte') or (o.state.libelle == 'Clôturée')) %}
-                                    <a href="{{ path('outing_withdraw',{'id':o.id}) }}" class="btn btn-danger"
+                                    <a href="{{ path('outing_withdraw',{'id':o.id}) }}" class="btn btn-hover color-11"
                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Se désister">
                                         <i class="fa fa-user-minus"></i>
                                     </a>
                                 {% endif %}
                                 {# Si l'utilisateur n'est pas dans la liste des participants est que le statut est ouvert, il peut s'inscrire #}
                                 {% if (app.user not in o.attendees) and (o.state.libelle == 'Ouverte') %}
-                                    <a href="{{ path('outing_register',{'id':o.id}) }}" class="btn btn-primary"
+                                    <a href="{{ path('outing_register',{'id':o.id}) }}" class="btn btn-hover color-9"
                                        data-bs-toggle="tooltip" data-bs-placement="top" title="S'inscrire">
                                         <i class="fa fa-user-plus"></i>
                                     </a>
                                 {% endif %}
                                 {# Si l'utilisateur est bien l'organisateur et que l'activité n'a pas débutée, il peut l'annuler #}
                                 {% if (app.user == o.organizer) and ((o.state.libelle == 'Ouverte') or (o.state.libelle == 'Clôturée')) %}
-                                    <a href="{{ path('outing_cancel',{'id':o.id}) }}" class="btn btn-warning"
+                                    <a href="{{ path('outing_cancel',{'id':o.id}) }}" class="btn btn-hover color-1"
                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Annuler">
                                         <i class="fa fa-ban"></i>
                                     </a>
                                 {% endif %}
                                 {# Si l'utilisateur est bien l'organisateur et que l'activité n'est pas ouverte il peut la supprimer #}
                                 {% if (app.user == o.organizer) and (o.state.libelle == 'Créée') %}
-                                    <a href="{{ path('outing_delete',{'id':o.id}) }}" class="btn btn-danger"
+                                    <a href="{{ path('outing_delete',{'id':o.id}) }}" class="btn btn-hover color-10"
                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 {% endif %}
                                 {# Si l'utilisateur est bien l'organisateur et que l'activité n'est pas ouverte il peut la modifier #}
                                 {% if (app.user == o.organizer) and (o.state.libelle == 'Créée') %}
-                                    <a href="{{ path('outing_update',{'id':o.id}) }}" class="btn btn-secondary"
+                                    <a href="{{ path('outing_update',{'id':o.id}) }}" class="btn btn-hover color-8"
                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
                                         <i class="fa fa-pencil"></i>
                                     </a>

@@ -76,6 +76,8 @@ class OutingController extends AbstractController
             $outing->setState($mgr->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
             $mgr->persist($outing);
             $mgr->flush();
+            $this->addFlash('success', 'Votre sortie ' . $outing->getName() . ' est bien publiée');
+
         }
 
         return $this->redirectToRoute('app_outing');
@@ -93,6 +95,7 @@ class OutingController extends AbstractController
             }
             $em->persist($outing);
             $em->flush();
+            $this->addFlash('danger', 'Vous vous êtes bien désinscrit de : ' . $outing->getName());
             return $this->redirectToRoute('app_outing');
         } else {
 
@@ -115,6 +118,7 @@ class OutingController extends AbstractController
             };
             $em->persist($outing);
             $em->flush();
+            $this->addFlash('success', 'Vous êtes bien inscrit à : ' . $outing->getName());
             return $this->redirectToRoute('app_outing');
         }
     }
@@ -124,22 +128,21 @@ class OutingController extends AbstractController
      */
     public function cancel(Outing $outing, Request $req, EntityManagerInterface $em): Response
     {
-        $message = '';
         if ($req->request->get('submit')) {
             if ($outing->getOrganizer() === $this->getUser() && $outing->getStartDate() > new \DateTime('now')) {
                 $outing->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Annulée']));
                 $outing->setOutingInfo('!!! ANNULATION !!! ' . $req->request->get('outingInfo'));
                 $em->persist($outing);
                 $em->flush();
+                $this->addFlash('warning', 'Votre sortie ' . $outing->getName() . ' a bien été annulée');
                 return $this->redirectToRoute('app_outing');
             } else {
-                $message = 'Impossible d\'annuler la sortie';
+                $this->addFlash('danger', 'Impossible d\'annuler la sortie');
             }
         }
 
         return $this->render('outing/cancel.html.twig', [
             'outing' => $outing,
-            'message' => $message
         ]);
     }
 
@@ -151,9 +154,9 @@ class OutingController extends AbstractController
         if (($outing->getOrganizer() === $this->getUser()) && ($outing->getState()->getLibelle() == 'Créée')) {
             $em->remove($outing);
             $em->flush();
+            $this->addFlash('success', 'Votre sortie ' . $outing->getName() . ' à bien été supprimée');
         } else {
-            $message = 'Impossible de supprimer la sortie';
-            //TODO : envoyer le message
+            $this->addFlash('danger', 'Impossible de supprimer la sortie');
         }
         return $this->redirectToRoute('app_outing');
     }
@@ -170,13 +173,16 @@ class OutingController extends AbstractController
                 if ($req->request->get('update')) {
                     $em->persist($outing);
                     $em->flush();
+                    $this->addFlash('success', 'Votre sortie ' . $outing->getName() . ' a bien été modifiée');
                 } elseif ($req->request->get('delete')) {
                     $em->remove($outing);
                     $em->flush();
+                    $this->addFlash('danger', 'Votre sortie ' . $outing->getName() . ' a bien été supprimée');
                 } elseif ($req->request->get('published')) {
                     $outing->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
                     $em->persist($outing);
                     $em->flush();
+                    $this->addFlash('success', 'Votre sortie ' . $outing->getName() . ' a bien été publiée');
                 }
                 return $this->redirectToRoute('app_outing');
             }
@@ -209,10 +215,10 @@ class OutingController extends AbstractController
             $newOuting->setCampus($this->getUser()->getCampus());
             if ($req->request->get('creer')) {
                 $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Créée']));
-
+                $this->addFlash('success', 'Votre sortie ' . $newOuting->getName() . ' a bien été créée');
             } elseif ($req->request->get('published')) {
                 $newOuting->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
-
+                $this->addFlash('success', 'Votre sortie ' . $newOuting->getName() . ' a bien été publiée');
             };
             $newOuting->addAttendee($this->getUser());
 
@@ -223,31 +229,6 @@ class OutingController extends AbstractController
 
         return $this->render('outing/new.html.twig', [
             'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route ("/consult-outing/{id}", name="consult_outing",  requirements={"id"="\d+"})
-     */
-
-    public function consult(Request $req, OutingRepository $o, PlaceRepository $p, UserRepository $u): Response
-    {
-        $today = new \DateTime('now');
-        $OneMonthAgo = $today->sub(new \DateInterval('P1M'));
-        $idOuting = $req->get('id');
-        $outing = $o->find($idOuting);
-        if ($outing->getStartDate() < $OneMonthAgo) {
-            $this->addFlash('danger', 'la sortie a expirée');
-            return $this->redirectToRoute('default_home');
-        }
-        $lieu = $p->find($idOuting);
-        /** @var User $user */
-        $user = $this->getUser();
-
-        return $this->render('outing/consultOuting.html.twig', [
-            'outing' => $outing,
-            'place' => $p,
-            'user' => $user
         ]);
     }
 }

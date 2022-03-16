@@ -1,0 +1,24 @@
+{% for message in app.flashes('success') %}
+    <div class="position-fixed p-3" style="z-index: 1000; top: 80px;right: 50px">
+        <div class="alert alert-success">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+{% endfor %}
+{% for message in app.flashes('warning') %}
+    <div class="position-fixed p-3" style="z-index: 1000; top: 80px;right: 50px">
+        <div class="alert alert-warning">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+{% endfor %}
+{% for message in app.flashes('danger') %}
+    <div class="position-fixed p-3" style="z-index: 1000; top: 80px;right: 50px">
+        <div class="alert alert-danger">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+{% endfor %}

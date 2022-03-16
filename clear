@@ -1,0 +1,131 @@
+* [33m1067f73[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m Pagination OK plus recherche OK
+* [33m6f6ca41[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m derniere modif
+*   [33mc8ff86b[m Merge remote-tracking branch 'origin/main'
+[32m|[m[33m\[m  
+[32m|[m *   [33mee2dde6[m Merge remote-tracking branch 'origin/main'
+[32m|[m [34m|[m[35m\[m  
+[32m|[m [34m|[m * [33me7970cb[m message password fait
+[32m|[m * [35m|[m [33mf596f78[m Ajout PlaceForm et place.htlm, modif CreateOuting
+* [35m|[m [35m|[m [33mf7eb825[m Securité et vérif button outing form
+* [35m|[m [35m|[m [33mdab014b[m Modification formulaire outing button
+* [35m|[m [35m|[m [33m86e1bce[m Ajout lieu ok
+* [35m|[m [35m|[m   [33m50c5ede[m Merge remote-tracking branch 'origin/main'
+[36m|[m[35m\[m [35m\[m [35m\[m  
+[36m|[m [35m|[m [35m|[m[35m/[m  
+[36m|[m [35m|[m[35m/[m[35m|[m   
+[36m|[m * [35m|[m [33m97b7c9f[m message
+[36m|[m [35m|[m[35m/[m  
+* [35m|[m [33mf2296e1[m Modal pour l'ajout de lieu ok
+* [35m|[m [33m1db964d[m Modal pour l'ajout de lieu ok
+[35m|[m[35m/[m  
+* [33mefa56ac[m Upload img ok
+* [33mac1c4b5[m A finir Javascript
+* [33m42c2743[m Gestion erreur profil OK
+* [33mbd9bc6e[m Connection avec pseudo OK
+*   [33m5ee08d6[m Merge remote-tracking branch 'origin/main'
+[1;32m|[m[1;33m\[m  
+[1;32m|[m *   [33mea073ab[m Merge remote-tracking branch 'origin/main'
+[1;32m|[m [1;34m|[m[1;35m\[m  
+[1;32m|[m * [1;35m|[m [33m84fad32[m essaie message erreur
+* [1;35m|[m [1;35m|[m [33m592434d[m Gestion javascript + assert sortie
+[1;35m|[m [1;35m|[m[1;35m/[m  
+[1;35m|[m[1;35m/[m[1;35m|[m   
+* [1;35m|[m [33m38cc524[m Gestion javascript + assert sortie
+* [1;35m|[m [33m0aa8584[m Ajout PlaceForm et place.htlm, modif CreateOuting
+* [1;35m|[m [33m31fe688[m Ajout PlaceForm et place.htlm, modif CreateOuting
+* [1;35m|[m [33me7cc7ca[m Init gestion campus
+* [1;35m|[m   [33m7dc93c1[m Merge remote-tracking branch 'origin/main'
+[1;36m|[m[31m\[m [1;35m\[m  
+[1;36m|[m * [1;35m|[m [33mf407b5c[m Ajout consultForm et affichage consultouting
+* [31m|[m [1;35m|[m [33m4820038[m Annulation sortie OK
+[31m|[m[31m/[m [1;35m/[m  
+* [1;35m/[m [33m32aa1ae[m Ajout OutingForm et modification OutinController
+[1;35m|[m[1;35m/[m  
+* [33m90e28b0[m Configuration date format francais
+* [33mad4e6ad[m Display organizer OK
+* [33m3f820fb[m Gestion affichage Créée si organisateur
+* [33md5cf466[m Fixtures optimisées
+* [33m3af16bf[m Upload File OK -> a optimiser
+*   [33m01ac109[m Merge remote-tracking branch 'origin/main'
+[32m|[m[33m\[m  
+[32m|[m *   [33m48a9421[m Merge remote-tracking branch 'origin/main'
+[32m|[m [34m|[m[35m\[m  
+[32m|[m * [35m|[m [33mca1c4e7[m methode update auto en cours
+[32m|[m * [35m|[m [33m2818814[m Asset SearchOuting.php OK
+* [35m|[m [35m|[m [33mc04ad69[m Ajout OutingForm et modification OutinController
+[35m|[m [35m|[m[35m/[m  
+[35m|[m[35m/[m[35m|[m   
+* [35m|[m [33m7f78bcd[m Merge remote-tracking branch 'origin/main'
+[36m|[m[35m\[m[35m|[m 
+[36m|[m * [33m4f6a6b7[m suppression form outing
+* [1;31m|[m [33mfc0f034[m changement de state
+[1;31m|[m[1;31m/[m  
+* [33m6ad46d5[m Multiple button new outing
+*   [33ma0168d8[m Merge remote-tracking branch 'origin/main'
+[1;32m|[m[1;33m\[m  
+[1;32m|[m * [33m1335328[m s'inscrire, se désister
+* [1;33m|[m [33m2760640[m Création formulaire nouvelle sortie
+* [1;33m|[m [33m76422f1[m Gestion des bouttons OK
+[1;33m|[m[1;33m/[m  
+*   [33mffee5e0[m Merge remote-tracking branch 'origin/main'
+[1;34m|[m[1;35m\[m  
+[1;34m|[m *   [33mb164605[m Merge remote-tracking branch 'origin/main'
+[1;34m|[m [1;36m|[m[31m\[m  
+[1;34m|[m * [31m|[m [33m04d6a8d[m mise à jour form/userCntroller/dossier user
+* [31m|[m [31m|[m [33m6b8636d[m Init admin
+* [31m|[m [31m|[m [33maa64141[m Diplays attendees into Outing
+* [31m|[m [31m|[m [33m391c4d1[m registrer ok
+* [31m|[m [31m|[m [33m39626db[m Mise en forme Affichage sortie
+* [31m|[m [31m|[m [33ma1dec88[m Mise en forme connection
+* [31m|[m [31m|[m [33me72d11d[m Mise en forme connection
+[31m|[m [31m|[m[31m/[m  
+[31m|[m[31m/[m[31m|[m   
+* [31m|[m [33m02d93cd[m Merge remote-tracking branch 'origin/main'
+[32m|[m[31m\[m[31m|[m 
+[32m|[m * [33mb6403c5[m Mise en place des buttons d'actions
+[32m|[m * [33m39d352e[m Mise en forme detail sortie
+[32m|[m * [33m704d0a6[m Mise en place function published + detail sortie
+[32m|[m * [33mad98572[m Optimisation Fixture
+* [33m|[m [33m025142a[m se désister
+[33m|[m[33m/[m  
+* [33mda57a9b[m se souvenir de moi
+* [33m3225655[m mise a jour path internal + nav
+* [33m507c5c4[m ajout dossier image et modification userFom
+* [33m41cc1dd[m Merge branch 'main' of D:\wamp64\www\Sortir with conflicts.
+* [33m337efdc[m Login OK BONN DIEUUUUUU
+* [33m06dd603[m Login OK BONN DIEUUUUUU
+* [33m408e449[m Filtrer date Ok
+* [33m601d8bc[m A voir probleme login
+* [33m9939245[m A voir probleme date + inner join
+* [33m91f0721[m Modif layout SearchForm
+* [33m4861d6d[m Modif layout Outing
+* [33m3b4e3e7[m modif logo
+* [33mce057b2[m Modif fixtures pseudo
+* [33m653fec5[m Delete .idea directory
+* [33m5be20a6[m final 09/03/2022
+* [33mb50e36f[m test login
+* [33mb605f3e[m mise à jour form/userCntroller/dossier user
+* [33md1cf3eb[m mise à jour pseudo
+* [33m17a9910[m Réarrangement formulaire de recherche
+*   [33m27168af[m Merge branch 'main' of https://github.com/you35000/Sortir
+[34m|[m[35m\[m  
+[34m|[m *   [33m124cc90[m Merge branch 'main' of https://github.com/you35000/Sortir
+[34m|[m [36m|[m[1;31m\[m  
+[34m|[m * [1;31m|[m [33mc9c7b38[m init registration
+* [1;31m|[m [1;31m|[m [33maa7179b[m Init Form&Class for Search
+[1;31m|[m [1;31m|[m[1;31m/[m  
+[1;31m|[m[1;31m/[m[1;31m|[m   
+* [1;31m|[m [33m52f69bc[m Init Form&Class for Search
+* [1;31m|[m [33m2b75271[m Recherche par date OK
+* [1;31m|[m [33m91aff2a[m Recherche par campus OK
+* [1;31m|[m [33m38127fb[m Mise en forme formulaire de recherche
+[1;31m|[m[1;31m/[m  
+*   [33m4205e2e[m Merge branch 'main' of https://github.com/you35000/Sortir
+[1;32m|[m[1;33m\[m  
+[1;32m|[m * [33m6fae58d[m Create README.md
+* [1;33m|[m [33mf73463d[m Form filtre sorties
+[1;33m|[m[1;33m/[m  
+* [33mf16dea1[m Ajout Boostrap + FontAwesome + Affichage des sorties
+* [33me0e21c9[m Mise en place les entites + données fixtures
+* [33m244c917[m add city commit
+* [33ma16892c[m 1 commit

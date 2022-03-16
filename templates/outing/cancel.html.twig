@@ -4,11 +4,14 @@
 
 {% block main %}
     <div class="col-6 offset-3">
-        {% if message != '' %}
-            <div class="alert alert-danger" role="alert">
-                {{ message }}
+        {% for message in app.flashes('danger') %}
+            <div class="position-fixed p-3" style="z-index: 1000; top: 80px;right: 50px">
+                <div class="alert alert-danger">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </div>
-        {% endif %}
+        {% endfor %}
         <div class="card border-dark">
             <div class="card-header d-flex justify-content-between">
                 <h5>Campus : {{ outing.campus.name }}</h5>
