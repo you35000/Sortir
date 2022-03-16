@@ -14,6 +14,7 @@ use App\Repository\PlaceRepository;
 use App\Repository\UserRepository;
 use App\Service\UpdateState;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,23 +29,29 @@ class OutingController extends AbstractController
     /**
      * @Route("/outing", name="app_outing")
      */
-    public function index(Request $req, EntityManagerInterface $mgr, UpdateState $updateState): Response
+    public function index(Request $req, EntityManagerInterface $mgr, UpdateState $updateState, PaginatorInterface $paginator): Response
     {
         $updateState->updateOutings();
         $outings = $mgr->getRepository(Outing::class)->findAllNotHistorized($this->getUser());
         $campus = $mgr->getRepository(Campus::class)->findAll();
 
-        $form = $this->createForm(SearchFormType::class);
+        $form = $this->createForm(SearchFormType::class, null, [
+            'action' => $this->generateUrl('app_outing'),
+            'method' => 'GET',
+        ]);
+
         $form->handleRequest($req);
         if ($form->isSubmitted() && $form->isValid()) {
             $search = $form->getData();
             $outings = $mgr->getRepository(Outing::class)->filters($search, $this->getUser());
         }
 
+        //Pagination des sorties :
+        $outingsToDisplay = $paginator->paginate($outings, $req->query->getInt('page', 1), 6);
 
         return $this->render('outing/index.html.twig', [
             'controller_name' => 'OutingController',
-            'outings' => $outings,
+            'outings' => $outingsToDisplay,
             'campus' => $campus,
             'form' => $form->createView(),
         ]);
@@ -160,15 +167,13 @@ class OutingController extends AbstractController
             $form = $this->createForm(OutingFormType::class, $outing);
             $form->handleRequest($req);
             if ($form->isSubmitted() && $form->isValid()) {
-                if ($req->request->get('update') && $outing->getState()->getLibelle() == 'Créée' && $outing->getOrganizer() === $this->getUser()) {
+                if ($req->request->get('update')) {
                     $em->persist($outing);
                     $em->flush();
-                }
-                if ($req->request->get('delete') && $outing->getState()->getLibelle() == 'Créée' && $outing->getOrganizer() === $this->getUser()) {
+                } elseif ($req->request->get('delete')) {
                     $em->remove($outing);
                     $em->flush();
-                }
-                if ($req->request->get('published') && $outing->getState()->getLibelle() == 'Créée' && $outing->getOrganizer() === $this->getUser()) {
+                } elseif ($req->request->get('published')) {
                     $outing->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
                     $em->persist($outing);
                     $em->flush();

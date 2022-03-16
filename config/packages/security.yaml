@@ -27,7 +27,8 @@ security:
       logout:
         path: app_logout
         # where to redirect after logout
-        # target: app_any_route
+        target: /
+        invalidate_session: true
 
 
       # activate different ways to authenticate

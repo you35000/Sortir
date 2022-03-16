@@ -50,7 +50,7 @@ class OutingRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
- 
+
     public function findAllNotHistorized($user)
     {
         return $this->createQueryBuilder('o')
@@ -108,12 +108,12 @@ class OutingRepository extends ServiceEntityRepository
             $qb->andWhere('o.startDate > CURRENT_DATE()');
         }
 
-        //TODO: voir requête pour supprimer les sorties créées par d'autres utilisateurs
 
         $qb->orderBy('o.startDate', 'ASC');
 
 
         $query = $qb->getQuery();
+
         return $query->execute();
     }
 
