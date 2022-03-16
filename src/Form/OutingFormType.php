@@ -26,7 +26,9 @@ class OutingFormType extends AbstractType
             ])
             ->add('startDate', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie',
-                'widget' => 'single_text',
+//                'widget' => 'single_text',
+                'date_widget' => 'single_text',
+                'time_widget' => 'single_text',
                 'data' => (new \DateTime())->modify('+1 day'),
             ])
             ->add('limitDate', DateType::class, [

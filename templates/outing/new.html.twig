@@ -36,7 +36,7 @@
         </div>
     </div>
      {% endverbatim %}
-        <div class="col-8 offset-2">
+        <div class="col-10 offset-1">
             <h2>Créer votre sortie</h2>
             {{ form_start(form) }}
             <div class="row mt-5">
@@ -48,7 +48,11 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            {{ form_row(form.startDate) }}
+                            {{ form_label(form.startDate) }}
+                            <div class="row">
+                                <div class="col-7">{{ form_widget(form.startDate.date) }}</div>
+                                <div class="col-5">{{ form_widget(form.startDate.time) }}</div>
+                            </div>
                         </div>
                         <div class="col-6">
                             {{ form_row(form.limitDate ) }}
